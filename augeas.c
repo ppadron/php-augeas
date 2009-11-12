@@ -16,8 +16,6 @@
   +----------------------------------------------------------------------+
 */
 
-/* $Id: header,v 1.16.2.1.2.1 2007/01/01 19:32:09 iliaa Exp $ */
-
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
@@ -27,10 +25,6 @@
 #include "ext/standard/info.h"
 #include "augeas.h"
 #include "php_augeas.h"
-
-/* If you declare any globals in php_augeas.h uncomment this:
-ZEND_DECLARE_MODULE_GLOBALS(augeas)
-*/
 
 /* True global resources - no need for thread safety here */
 static int le_augeas;
@@ -96,6 +90,10 @@ PHP_MINFO_FUNCTION(augeas)
 }
 /* }}} */
 
+
+/**
+ * proto string augeas_init(resource $augeas, [string $loadpath, [int $flags]]);
+ */
 PHP_FUNCTION(augeas_init) {
 
   char *root;
@@ -103,6 +101,7 @@ PHP_FUNCTION(augeas_init) {
   int root_len, loadpath_len;
   long flags;
   php_augeas *aug;
+
 
   if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s|sl", &root, &root_len, &loadpath, &loadpath_len, &flags) == FAILURE) {
     RETURN_FALSE;
@@ -115,13 +114,16 @@ PHP_FUNCTION(augeas_init) {
 
 }
 
+
+/**
+ * proto string augeas_get(resource $augeas, string $path);
+ */
 PHP_FUNCTION(augeas_get) {
 
     php_augeas *aug;
-    char *path;
-    int path_len;
-    signed int retval;
-    char *value;
+    char *path, *value;
+    char **matches;
+    int path_len, retval;
     zval *zaug;
    
     if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "rs", &zaug, &path, &path_len) == FAILURE) {
@@ -136,31 +138,43 @@ PHP_FUNCTION(augeas_get) {
 
     retval = aug_get(aug->augeas, path, &value);
 
-    php_printf("%d", retval);
-
     switch (retval) {
+
+        /* No match */
         case 0:
             RETURN_NULL();
             break;
+
+        /* Exactly one match */
         case 1:
+            /* If the specified path is a tree, NULL is returned */
+            if (value == NULL) {
+                RETURN_NULL();
+            }
             RETURN_STRING(value, 1);
-            efree(value);
             break;
+
         default:
-            RETURN_FALSE;
+            php_error_docref(NULL TSRMLS_CC, E_WARNING, "specified path is invalid");
+            RETURN_NULL();
             break;
     }
     
 }
 
 
-
+/**
+ * proto array augeas_match(resource $augeas, string $path);
+ */
 PHP_FUNCTION(augeas_match) {
 
     php_augeas *aug;
     zval *zaug;
+    int i;
     char *path;
+    char *value;
     char **matches;
+
     int path_len, retval;
 
     if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "rs", &zaug, &path, &path_len) == FAILURE) {
@@ -171,18 +185,17 @@ PHP_FUNCTION(augeas_match) {
 
     retval = aug_match(aug->augeas, path, &matches);
 
-    switch (retval) { 
-        case 0:
-            RETURN_NULL();
-            break;
-        case 1:
-            char *value;
-            aug_get(aug->augeas, path, &value);
-            RETURN_STRING(value, 1);
-            break;
-        default:
-            break;
-        }
+    array_init(return_value);
+
+    if (retval == 0) {
+        RETURN_NULL();
+    }
+
+    array_init(return_value);
+
+    for (i=0; i<retval; i++) {
+        add_next_index_string(return_value, matches[i], 1);
+    }
 
 }
 
