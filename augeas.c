@@ -34,11 +34,13 @@ static int le_augeas;
  * Every user visible function must have an entry in augeas_functions[].
  */
 function_entry augeas_functions[] = {
-    PHP_FE(augeas_init,  NULL)
-    PHP_FE(augeas_get,   NULL)
-    PHP_FE(augeas_match, NULL)
-    PHP_FE(augeas_set,   NULL)
-    PHP_FE(augeas_save,  NULL)
+    PHP_FE(augeas_init,   NULL)
+    PHP_FE(augeas_get,    NULL)
+    PHP_FE(augeas_match,  NULL)
+    PHP_FE(augeas_set,    NULL)
+    PHP_FE(augeas_save,   NULL)
+    PHP_FE(augeas_rm,     NULL)
+    PHP_FE(augeas_insert, NULL)
 	{NULL, NULL, NULL}	/* Must be the last line in augeas_functions[] */
 };
 /* }}} */
@@ -69,6 +71,13 @@ ZEND_GET_MODULE(augeas)
 PHP_MINIT_FUNCTION(augeas)
 {
     le_augeas = zend_register_list_destructors_ex(NULL, NULL, PHP_AUGEAS_RESOURCE_NAME, module_number); 
+    REGISTER_LONG_CONSTANT("AUGEAS_NONE", AUG_NONE, CONST_CS|CONST_PERSISTENT);
+    REGISTER_LONG_CONSTANT("AUGEAS_SAVE_BACKUP", AUG_SAVE_BACKUP, CONST_CS|CONST_PERSISTENT);
+    REGISTER_LONG_CONSTANT("AUGEAS_SAVE_NEWFILE", AUG_SAVE_NEWFILE, CONST_CS|CONST_PERSISTENT);
+    REGISTER_LONG_CONSTANT("AUGEAS_TYPE_CHECK", AUG_TYPE_CHECK, CONST_CS|CONST_PERSISTENT);
+    REGISTER_LONG_CONSTANT("AUGEAS_NO_STDINC", AUG_NO_STDINC, CONST_CS|CONST_PERSISTENT);
+    REGISTER_LONG_CONSTANT("AUGEAS_INSERT_BEFORE", 0, CONST_CS|CONST_PERSISTENT);
+    REGISTER_LONG_CONSTANT("AUGEAS_INSERT_AFTER", 1, CONST_CS|CONST_PERSISTENT);
 	return SUCCESS;
 }
 /* }}} */
@@ -201,6 +210,32 @@ PHP_FUNCTION(augeas_match) {
 
 }
 
+/**
+ * proto array augeas_rm(resource $augeas, string $path);
+ */
+PHP_FUNCTION(augeas_rm) {
+    
+    php_augeas *aug;
+    zval *zaug;
+    int path_len, value_len, retval;
+    char *path, *value;
+
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "rs", &zaug, &path, &path_len, &value, &value_len)) {
+        RETURN_FALSE;
+    }
+
+    aug = (php_augeas *) zend_fetch_resource(&zaug TSRMLS_CC, -1, PHP_AUGEAS_RESOURCE_NAME, NULL, 1, le_augeas);
+
+    /* aug_rm returns the number of removed entries */
+    retval = aug_rm(aug->augeas, path);
+
+    RETURN_LONG(retval);
+}
+
+
+/**
+ * proto array augeas_set(resource $augeas, string $path);
+ */
 PHP_FUNCTION(augeas_set) {
 
     php_augeas *aug;
@@ -224,6 +259,38 @@ PHP_FUNCTION(augeas_set) {
 
 }
 
+
+/**
+ * proto augeas_insert(resource $augeas, string $path, string $label, int $before);
+ */
+PHP_FUNCTION(augeas_insert) {
+    
+    php_augeas *aug;
+    zval *zaug;
+    char *path, *label;
+    int retval, path_len, label_len, before;
+
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "rssl", &zaug, &path,
+        &path_len, &label, &label_len, &before)) {
+        RETURN_FALSE;
+    }
+
+    aug = (php_augeas *) zend_fetch_resource(&zaug TSRMLS_CC, -1, PHP_AUGEAS_RESOURCE_NAME, NULL, 1, le_augeas);
+
+    retval = aug_insert(aug->augeas, path, label, before);
+
+    if (retval == 0) {
+        RETURN_TRUE;
+    } else {
+        RETURN_FALSE;
+    }
+
+}
+
+
+/**
+ * proto boolean augeas_save(resource $augeas);
+ */
 PHP_FUNCTION(augeas_save) {
 
     php_augeas *aug;
