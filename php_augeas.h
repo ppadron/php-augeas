@@ -16,8 +16,6 @@
   +----------------------------------------------------------------------+
 */
 
-/* $Id: header,v 1.16.2.1.2.1 2007/01/01 19:32:09 iliaa Exp $ */
-
 #ifndef PHP_AUGEAS_H
 #define PHP_AUGEAS_H
 
@@ -54,26 +52,6 @@ PHP_FUNCTION(augeas_rm);
 PHP_FUNCTION(augeas_insert);
 
 #define PHP_AUGEAS_RESOURCE_NAME "augeas"
-
-/* 
-  	Declare any global variables you may need between the BEGIN
-	and END macros here:     
-
-ZEND_BEGIN_MODULE_GLOBALS(augeas)
-	long  global_value;
-	char *global_string;
-ZEND_END_MODULE_GLOBALS(augeas)
-*/
-
-/* In every utility function you add that needs to use variables 
-   in php_augeas_globals, call TSRMLS_FETCH(); after declaring other 
-   variables used by that function, or better yet, pass in TSRMLS_CC
-   after the last function argument and declare your utility function
-   with TSRMLS_DC after the last declared argument.  Always refer to
-   the globals in your function as AUGEAS_G(variable).  You are 
-   encouraged to rename these macros something shorter, see
-   examples in any other php module directory.
-*/
 
 #ifdef ZTS
 #define AUGEAS_G(v) TSRMG(augeas_globals_id, zend_augeas_globals *, v)
