@@ -1,7 +1,3 @@
-dnl
-dnl $Id: config.m4,v 1.5.4.1 2006/12/23 17:58:47 derick Exp $
-dnl
-
 PHP_ARG_WITH(augeas,for AUGEAS support,
 [  --with-augeas[=DIR]       Include AUGEAS support])
 
