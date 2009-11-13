@@ -236,7 +236,7 @@ PHP_FUNCTION(augeas_save) {
 
     aug = (php_augeas *) zend_fetch_resource(&zaug TSRMLS_CC, -1, PHP_AUGEAS_RESOURCE_NAME, NULL, 1, le_augeas);
 
-    retval = aug_save(aug);
+    retval = aug_save(aug->augeas);
 
     if (retval == 0) {
         RETURN_TRUE;
