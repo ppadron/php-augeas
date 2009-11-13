@@ -37,6 +37,8 @@ function_entry augeas_functions[] = {
     PHP_FE(augeas_init,  NULL)
     PHP_FE(augeas_get,   NULL)
     PHP_FE(augeas_match, NULL)
+    PHP_FE(augeas_set,   NULL)
+    PHP_FE(augeas_save,  NULL)
 	{NULL, NULL, NULL}	/* Must be the last line in augeas_functions[] */
 };
 /* }}} */
@@ -195,6 +197,51 @@ PHP_FUNCTION(augeas_match) {
 
     for (i=0; i<retval; i++) {
         add_next_index_string(return_value, matches[i], 1);
+    }
+
+}
+
+PHP_FUNCTION(augeas_set) {
+
+    php_augeas *aug;
+    zval *zaug;
+    int path_len, value_len, retval;
+    char *path, *value;
+
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "rss", &zaug, &path, &path_len, &value, &value_len)) {
+        RETURN_FALSE;
+    }
+
+    aug = (php_augeas *) zend_fetch_resource(&zaug TSRMLS_CC, -1, PHP_AUGEAS_RESOURCE_NAME, NULL, 1, le_augeas);
+
+    retval = aug_set(aug->augeas, path, value);
+
+    if (retval == 0) {
+        RETURN_TRUE;
+    } else {
+        RETURN_FALSE;
+    }
+
+}
+
+PHP_FUNCTION(augeas_save) {
+
+    php_augeas *aug;
+    zval *zaug;
+    int retval;
+
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "r", &zaug)) {
+        RETURN_FALSE;
+    }
+
+    aug = (php_augeas *) zend_fetch_resource(&zaug TSRMLS_CC, -1, PHP_AUGEAS_RESOURCE_NAME, NULL, 1, le_augeas);
+
+    retval = aug_save(aug);
+
+    if (retval == 0) {
+        RETURN_TRUE;
+    } else {
+        RETURN_FALSE;
     }
 
 }

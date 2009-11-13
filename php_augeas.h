@@ -48,6 +48,8 @@ PHP_MINFO_FUNCTION(augeas);
 PHP_FUNCTION(augeas_init);
 PHP_FUNCTION(augeas_match);
 PHP_FUNCTION(augeas_get);
+PHP_FUNCTION(augeas_set);
+PHP_FUNCTION(augeas_save);
 
 #define PHP_AUGEAS_RESOURCE_NAME "augeas"
 
