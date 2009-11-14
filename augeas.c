@@ -41,7 +41,8 @@ function_entry augeas_functions[] = {
     PHP_FE(augeas_save,   NULL)
     PHP_FE(augeas_rm,     NULL)
     PHP_FE(augeas_insert, NULL)
-	{NULL, NULL, NULL}	/* Must be the last line in augeas_functions[] */
+    PHP_FE(augeas_close,  NULL)
+	{NULL, NULL, NULL}
 };
 /* }}} */
 
@@ -56,7 +57,7 @@ zend_module_entry augeas_module_entry = {
 	NULL,
 	NULL,
 	PHP_MINFO(augeas),
-	"0.1", /* Replace with version number for your extension */
+	"0.1",
 	STANDARD_MODULE_PROPERTIES
 };
 /* }}} */
@@ -66,11 +67,23 @@ ZEND_GET_MODULE(augeas)
 #endif
 
 
+static void _php_augeas_dtor(zend_rsrc_list_entry *rsrc TSRMLS_DC) {
+
+    php_augeas *aug = (php_augeas *) rsrc->ptr;
+
+    if (aug) {
+        efree(aug);
+    }
+
+}
+
+
 /* {{{ PHP_MINIT_FUNCTION
  */
 PHP_MINIT_FUNCTION(augeas)
 {
-    le_augeas = zend_register_list_destructors_ex(NULL, NULL, PHP_AUGEAS_RESOURCE_NAME, module_number); 
+    le_augeas = zend_register_list_destructors_ex(_php_augeas_dtor, NULL, PHP_AUGEAS_RESOURCE_NAME, module_number); 
+
     REGISTER_LONG_CONSTANT("AUGEAS_NONE", AUG_NONE, CONST_CS|CONST_PERSISTENT);
     REGISTER_LONG_CONSTANT("AUGEAS_SAVE_BACKUP", AUG_SAVE_BACKUP, CONST_CS|CONST_PERSISTENT);
     REGISTER_LONG_CONSTANT("AUGEAS_SAVE_NEWFILE", AUG_SAVE_NEWFILE, CONST_CS|CONST_PERSISTENT);
@@ -102,24 +115,23 @@ PHP_MINFO_FUNCTION(augeas)
 /* }}} */
 
 
-/**
- * proto string augeas_init(resource $augeas, [string $loadpath, [int $flags]]);
- */
+/* {{{ proto string augeas_init([string $root, [string $loadpath, [int $flags]]);
+  Initilizes an augeas resource  */
 PHP_FUNCTION(augeas_init) {
 
-  char *root;
-  char *loadpath;
+  char *root = "/";
+  char *loadpath = "";
   int root_len, loadpath_len;
-  long flags;
+  long flags = AUG_NONE;
   php_augeas *aug;
 
 
-  if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s|sl", &root, &root_len, &loadpath, &loadpath_len, &flags) == FAILURE) {
+  if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "|s!s!l", &root, &root_len, &loadpath, &loadpath_len, &flags) == FAILURE) {
     RETURN_FALSE;
   }
 
   aug = emalloc(sizeof(php_augeas));
-  aug->augeas = aug_init(root, "", 0);
+  aug->augeas = aug_init(root, loadpath, flags);
 
   ZEND_REGISTER_RESOURCE(return_value, aug, le_augeas);  
 
@@ -310,6 +322,25 @@ PHP_FUNCTION(augeas_save) {
     } else {
         RETURN_FALSE;
     }
+
+}
+
+/**
+ * proto boolean augeas_close(resource $augeas);
+ */
+PHP_FUNCTION(augeas_close) {
+
+    php_augeas *aug;
+    zval *zaug;
+
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "r", &zaug)) {
+        RETURN_FALSE;
+    }
+
+    aug = (php_augeas *) zend_fetch_resource(&zaug TSRMLS_CC, -1, PHP_AUGEAS_RESOURCE_NAME, NULL, 1, le_augeas);
+
+    aug_close(aug->augeas);
+
 
 }
 

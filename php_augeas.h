@@ -50,6 +50,7 @@ PHP_FUNCTION(augeas_set);
 PHP_FUNCTION(augeas_save);
 PHP_FUNCTION(augeas_rm);
 PHP_FUNCTION(augeas_insert);
+PHP_FUNCTION(augeas_close);
 
 #define PHP_AUGEAS_RESOURCE_NAME "augeas"
 
