@@ -64,8 +64,8 @@ ZEND_GET_MODULE(augeas)
 #endif
 
 /* {{{ _php_augeas_dtor */
-static void _php_augeas_dtor(zend_rsrc_list_entry *rsrc TSRMLS_DC) {
-
+static void _php_augeas_dtor(zend_rsrc_list_entry *rsrc TSRMLS_DC)
+{
     php_augeas *aug = (php_augeas *) rsrc->ptr;
 
     if (aug) {
@@ -117,8 +117,8 @@ PHP_MINFO_FUNCTION(augeas)
 
 /* {{{ proto string augeas_init([string $root, [string $loadpath, [int $flags]]);
        Initilizes an augeas resource  */
-PHP_FUNCTION(augeas_init) {
-
+PHP_FUNCTION(augeas_init)
+{
   char *root = "/";
   char *loadpath = "";
   int root_len, loadpath_len;
@@ -140,8 +140,8 @@ PHP_FUNCTION(augeas_init) {
 
 /* {{{  proto string augeas_get(resource $augeas, string $path);
         Returns the node value. Will throw E_WARNING if path is invalid. */
-PHP_FUNCTION(augeas_get) {
-
+PHP_FUNCTION(augeas_get)
+{
     php_augeas *aug;
     char *path, *value;
     char **matches;
@@ -188,8 +188,8 @@ PHP_FUNCTION(augeas_get) {
 
 /* {{{  proto array augeas_match(resource $augeas, string $path);
         Returns an array with all the matches */
-PHP_FUNCTION(augeas_match) {
-
+PHP_FUNCTION(augeas_match)
+{
     php_augeas *aug;
     zval *zaug;
     int i;
@@ -225,8 +225,8 @@ PHP_FUNCTION(augeas_match) {
 
 /* {{{ proto array augeas_rm(resource $augeas, string $path);
        Removes a node and all it's children */
-PHP_FUNCTION(augeas_rm) {
-    
+PHP_FUNCTION(augeas_rm)
+{   
     php_augeas *aug;
     zval *zaug;
     int path_len, value_len, retval;
@@ -248,8 +248,8 @@ PHP_FUNCTION(augeas_rm) {
 
 /* {{{ boolean array augeas_set(resource $augeas, string $path, string $value);
        Sets the value of $path to $value */
-PHP_FUNCTION(augeas_set) {
-
+PHP_FUNCTION(augeas_set)
+{
     php_augeas *aug;
     zval *zaug;
     int path_len, value_len, retval;
@@ -272,10 +272,11 @@ PHP_FUNCTION(augeas_set) {
 }
 /* }}} */
 
+
 /* {{{  proto boolean augeas_insert(resource $augeas, string $path, string $label, int $before);
         Inserts a new sibling of path expression $path with label $label before or after $path, depending on $before. $path must match exactly one node in the tree. */
-PHP_FUNCTION(augeas_insert) {
-    
+PHP_FUNCTION(augeas_insert)
+{    
     php_augeas *aug;
     zval *zaug;
     char *path, *label;
@@ -295,14 +296,13 @@ PHP_FUNCTION(augeas_insert) {
     } else {
         RETURN_FALSE;
     }
-
 }
 
 
 /* {{{  proto boolean augeas_save(resource $augeas);
         Saves the parts of the tree that have been changed into their respective files. */
-PHP_FUNCTION(augeas_save) {
-
+PHP_FUNCTION(augeas_save)
+{
     php_augeas *aug;
     zval *zaug;
     int retval;
@@ -327,8 +327,8 @@ PHP_FUNCTION(augeas_save) {
 
 /* {{{ proto boolean augeas_close(resource $augeas);
        Closes an Augeas resource */
-PHP_FUNCTION(augeas_close) {
-
+PHP_FUNCTION(augeas_close)
+{
     php_augeas *aug;
     zval *zaug;
 
@@ -339,7 +339,6 @@ PHP_FUNCTION(augeas_close) {
     aug = (php_augeas *) zend_fetch_resource(&zaug TSRMLS_CC, -1, PHP_AUGEAS_RESOURCE_NAME, NULL, 1, le_augeas);
 
     aug_close(aug->augeas);
-
 
 }
 /* }}} */
