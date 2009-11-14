@@ -37,20 +37,22 @@ typedef struct _php_augeas {
     augeas *augeas;
 } php_augeas;
 
+extern zend_class_entry* augeas_ce_Augeas;
+
 PHP_MINIT_FUNCTION(augeas);
 PHP_MSHUTDOWN_FUNCTION(augeas);
 PHP_RINIT_FUNCTION(augeas);
 PHP_RSHUTDOWN_FUNCTION(augeas);
 PHP_MINFO_FUNCTION(augeas);
 
-PHP_FUNCTION(augeas_init);
-PHP_FUNCTION(augeas_match);
-PHP_FUNCTION(augeas_get);
-PHP_FUNCTION(augeas_set);
-PHP_FUNCTION(augeas_save);
-PHP_FUNCTION(augeas_rm);
-PHP_FUNCTION(augeas_insert);
-PHP_FUNCTION(augeas_close);
+PHP_METHOD(Augeas, __construct);
+PHP_METHOD(Augeas, __destruct);
+PHP_METHOD(Augeas, get);
+PHP_METHOD(Augeas, set);
+PHP_METHOD(Augeas, match);
+PHP_METHOD(Augeas, save);
+PHP_METHOD(Augeas, rm);
+PHP_METHOD(Augeas, insert);
 
 #define PHP_AUGEAS_RESOURCE_NAME "augeas"
 
