@@ -12,7 +12,7 @@
   | obtain it through the world-wide-web, please send a note to          |
   | license@php.net so we can mail you a copy immediately.               |
   +----------------------------------------------------------------------+
-  | Author:                                                              |
+  | Author: Pedro Padron <ppadron at php dot net>                        |
   +----------------------------------------------------------------------+
 */
 
@@ -34,7 +34,7 @@ extern zend_module_entry augeas_module_entry;
 
 
 typedef struct _php_augeas {
-    augeas *augeas;
+	augeas *augeas;
 } php_augeas;
 
 extern zend_class_entry* augeas_ce_Augeas;

@@ -1,10 +1,10 @@
 /*
   +----------------------------------------------------------------------+
-  | PHP Version 5                                                        |
+  | PHP Version 5														 |
   +----------------------------------------------------------------------+
-  | Copyright (c) 1997-2007 The PHP Group                                |
+  | Copyright (c) 1997-2007 The PHP Group								 |
   +----------------------------------------------------------------------+
-  | This source file is subject to version 3.01 of the PHP license,      |
+  | This source file is subject to version 3.01 of the PHP license,	     |
   | that is bundled with this package in the file LICENSE, and is        |
   | available through the world-wide-web at the following url:           |
   | http://www.php.net/license/3_01.txt                                  |
@@ -35,25 +35,25 @@ zend_class_entry *augeas_ce_Augeas;
 /* {{{ ZEND_BEGIN_ARG_INFO */
 static
 ZEND_BEGIN_ARG_INFO(arginfo_Augeas__construct, 0)
-    ZEND_ARG_INFO(0, root)
-    ZEND_ARG_INFO(0, loadpath)
-    ZEND_ARG_INFO(0, flags)
+	ZEND_ARG_INFO(0, root)
+	ZEND_ARG_INFO(0, loadpath)
+	ZEND_ARG_INFO(0, flags)
 ZEND_END_ARG_INFO();
 
 static
 ZEND_BEGIN_ARG_INFO(arginfo_Augeas_get, 0)
-    ZEND_ARG_INFO(0, path)
+	ZEND_ARG_INFO(0, path)
 ZEND_END_ARG_INFO();
 
 static
 ZEND_BEGIN_ARG_INFO(arginfo_Augeas_match, 0)
-    ZEND_ARG_INFO(0, path)
+	ZEND_ARG_INFO(0, path)
 ZEND_END_ARG_INFO();
 
 static
 ZEND_BEGIN_ARG_INFO(arginfo_Augeas_set, 0)
-    ZEND_ARG_INFO(0, path)
-    ZEND_ARG_INFO(0, value)
+	ZEND_ARG_INFO(0, path)
+	ZEND_ARG_INFO(0, value)
 ZEND_END_ARG_INFO();
 
 static
@@ -62,20 +62,20 @@ ZEND_END_ARG_INFO();
 
 static
 ZEND_BEGIN_ARG_INFO(arginfo_Augeas_rm, 0)
-    ZEND_ARG_INFO(0, path)
+	ZEND_ARG_INFO(0, path)
 ZEND_END_ARG_INFO();
 
 static
 ZEND_BEGIN_ARG_INFO(arginfo_Augeas_insert, 0)
-    ZEND_ARG_INFO(0, path)
-    ZEND_ARG_INFO(0, label)
-    ZEND_ARG_INFO(0, order)
+	ZEND_ARG_INFO(0, path)
+	ZEND_ARG_INFO(0, label)
+	ZEND_ARG_INFO(0, order)
 ZEND_END_ARG_INFO();
 /* }}} */
 
 /* {{{ augeas_methods */
 static zend_function_entry augeas_methods[] = {
-    PHP_ME(Augeas, __construct, arginfo_Augeas__construct, ZEND_ACC_PUBLIC)
+	PHP_ME(Augeas, __construct, arginfo_Augeas__construct, ZEND_ACC_PUBLIC)
 	PHP_ME(Augeas, __destruct, NULL, ZEND_ACC_PUBLIC)
 	PHP_ME(Augeas, get, arginfo_Augeas_get, ZEND_ACC_PUBLIC)
 	PHP_ME(Augeas, set, arginfo_Augeas_set, ZEND_ACC_PUBLIC)
@@ -110,11 +110,11 @@ ZEND_GET_MODULE(augeas)
 /* {{{ _php_augeas_dtor */
 static void _php_augeas_dtor(zend_rsrc_list_entry *rsrc TSRMLS_DC)
 {
-    php_augeas *aug = (php_augeas *) rsrc->ptr;
+	php_augeas *aug = (php_augeas *) rsrc->ptr;
 
-    if (aug) {
-        efree(aug);
-    }
+	if (aug) {
+		efree(aug);
+	}
 
 }
 /* }}} */
@@ -123,7 +123,7 @@ static void _php_augeas_dtor(zend_rsrc_list_entry *rsrc TSRMLS_DC)
 static php_augeas * _php_augeas_read_resource(zval *object)
 {
 	zval *zaug;
-    php_augeas *return_value;
+	php_augeas *return_value;
 	zaug = zend_read_property(Z_OBJCE_P(object), object, "handle", strlen("handle"), 0 TSRMLS_DC);
 
 	if (Z_TYPE_P(zaug) != IS_RESOURCE) {
@@ -141,14 +141,14 @@ static php_augeas * _php_augeas_read_resource(zval *object)
  */
 PHP_MINIT_FUNCTION(augeas)
 {
-    le_augeas = zend_register_list_destructors_ex(_php_augeas_dtor, NULL, PHP_AUGEAS_RESOURCE_NAME, module_number); 
+	le_augeas = zend_register_list_destructors_ex(_php_augeas_dtor, NULL, PHP_AUGEAS_RESOURCE_NAME, module_number); 
 
 	zend_class_entry ce;
 
-    /* Register Augeas class */
-    INIT_CLASS_ENTRY(ce, "Augeas", augeas_methods);
-    augeas_ce_Augeas = zend_register_internal_class(&ce TSRMLS_CC);
-    augeas_ce_Augeas->ce_flags |= ZEND_ACC_FINAL_CLASS;
+	/* Register Augeas class */
+	INIT_CLASS_ENTRY(ce, "Augeas", augeas_methods);
+	augeas_ce_Augeas = zend_register_internal_class(&ce TSRMLS_CC);
+	augeas_ce_Augeas->ce_flags |= ZEND_ACC_FINAL_CLASS;
 
 	/* Register Augeas class constants */
 	zend_declare_class_constant_long(augeas_ce_Augeas, "AUGEAS_NONE", sizeof("AUGEAS_NONE")-1, AUG_NONE TSRMLS_DC);
@@ -186,237 +186,237 @@ PHP_MINFO_FUNCTION(augeas)
 /* {{{ proto void Augeas::__construct([string $root[, string $loadpath[, int $flags]]]) */
 PHP_METHOD(Augeas, __construct)
 {
-  char *root = "/";
-  char *loadpath = "";
-  int root_len, loadpath_len;
-  long flags = AUG_NONE;
-  php_augeas *aug;
-  zval *resource;
-  zval *this;
+	char *root = "/";
+	char *loadpath = "";
+	int root_len, loadpath_len;
+	long flags = AUG_NONE;
+	php_augeas *aug;
+	zval *resource;
+	zval *this;
 
 
-  if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "|s!s!l", &root, &root_len, &loadpath, &loadpath_len, &flags) == FAILURE) {
-    RETURN_FALSE;
-  }
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "|s!s!l", &root, &root_len, &loadpath, &loadpath_len, &flags) == FAILURE) {
+		RETURN_FALSE;
+	}
 
-  if (php_check_open_basedir(root TSRMLS_DC) != 0) {
-    RETURN_FALSE;
-  }
+	if (php_check_open_basedir(root TSRMLS_DC) != 0) {
+		RETURN_FALSE;
+	}
 
-  aug = emalloc(sizeof(php_augeas));
-  aug->augeas = aug_init(root, loadpath, flags);
+	aug = emalloc(sizeof(php_augeas));
+	aug->augeas = aug_init(root, loadpath, flags);
 
-  int resource_id = ZEND_REGISTER_RESOURCE(resource, aug, le_augeas);
+	int resource_id = ZEND_REGISTER_RESOURCE(resource, aug, le_augeas);
 
-  this = getThis();
+	this = getThis();
 
-  if (this == NULL) {
-	php_error_docref(NULL TSRMLS_CC, E_WARNING, "could not initialize augeas resource");
-  }
+	if (this == NULL) {
+		php_error_docref(NULL TSRMLS_CC, E_WARNING, "could not initialize augeas resource");
+	}
 
-  add_property_resource(this, "handle", resource_id);
+	add_property_resource(this, "handle", resource_id);
 
 }
 /* }}} */
 
-/* {{{ proto string Augeas::get(string $path) */
+/* { {{ proto string Augeas::get(string $path) */
 PHP_METHOD(Augeas, get)
 {
-    char *path, *value;
-    char **matches;
-    int path_len, retval;
-    php_augeas *aug;
+	char *path, *value;
+	char **matches;
+	int path_len, retval;
+	php_augeas *aug;
 
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &path, &path_len) == FAILURE) {
-        RETURN_FALSE;
-    }
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &path, &path_len) == FAILURE) {
+		RETURN_FALSE;
+	}
 
-    if (path_len < 1) {
-        RETURN_FALSE;
-    }   
+	if (path_len < 1) {
+		RETURN_FALSE;
+	}   
 
-    aug = _php_augeas_read_resource(getThis());
+	aug = _php_augeas_read_resource(getThis());
 
 	if (!aug) RETURN_NULL();
 
-    retval = aug_get(aug->augeas, path, &value);
+	retval = aug_get(aug->augeas, path, &value);
 
-    switch (retval) {
+	switch (retval) {
 
-        /* No match */
-        case 0:
-            RETURN_NULL();
-            break;
+		/* No match */
+		case 0:
+			RETURN_NULL();
+			break;
 
-        /* Exactly one match */
-        case 1:
-            /* If the specified path is a tree, NULL is returned */
-            if (value == NULL) {
-                RETURN_NULL();
-            }
-            RETURN_STRING(value, 1);
-            break;
+		/* Exactly one match */
+		case 1:
+			/* If the specified path is a tree, NULL is returned */
+			if (value == NULL) {
+				RETURN_NULL();
+			}
+			RETURN_STRING(value, 1);
+			break;
 
-        default:
-            php_error_docref(NULL TSRMLS_CC, E_WARNING, "specified path is invalid");
-            RETURN_NULL();
-            break;
-    }
-    
+		default:
+			php_error_docref(NULL TSRMLS_CC, E_WARNING, "specified path is invalid");
+			RETURN_NULL();
+			break;
+	}
+	
 }
 /* }}} */
 
-/* {{{ proto boolean Augeas::set(resource $augeas, string $path, string $value);
-       Sets the value of $path to $value */
+/* { {{ proto boolean Augeas::set(resource $augeas, string $path, string $value);
+	   Sets the value of $path to $value */
 PHP_METHOD(Augeas, set)
 {
-    php_augeas *aug;
-    int path_len, value_len, retval;
-    char *path, *value;
+	php_augeas *aug;
+	int path_len, value_len, retval;
+	char *path, *value;
 
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ss", &path, &path_len, &value, &value_len)) {
-        RETURN_FALSE;
-    }
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ss", &path, &path_len, &value, &value_len)) {
+		RETURN_FALSE;
+	}
 
-    aug = _php_augeas_read_resource(getThis());
+	aug = _php_augeas_read_resource(getThis());
 
 	if (!aug) RETURN_NULL();
 
-    retval = aug_set(aug->augeas, path, value);
+	retval = aug_set(aug->augeas, path, value);
 
-    if (retval == 0) {
-        RETURN_TRUE;
-    } else {
-        RETURN_FALSE;
-    }
+	if (retval == 0) {
+		RETURN_TRUE;
+	} else {
+		RETURN_FALSE;
+	}
 
 }
 /* }}} */
 
 /* {{{  proto array Augeas::match(string $path);
-        Returns an array with all the matches */
+		Returns an array with all the matches */
 PHP_METHOD(Augeas, match)
 {
-    php_augeas *aug;
-    int i;
-    char *path;
-    char *value;
-    char **matches;
+	php_augeas *aug;
+	int i;
+	char *path;
+	char *value;
+	char **matches;
 
-    int path_len, retval;
+	int path_len, retval;
 
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &path, &path_len) == FAILURE) {
-        RETURN_FALSE;
-    }
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &path, &path_len) == FAILURE) {
+		RETURN_FALSE;
+	}
 
 	aug = _php_augeas_read_resource(getThis());
 
 	if (!aug) RETURN_NULL();
 
-    retval = aug_match(aug->augeas, path, &matches);
+	retval = aug_match(aug->augeas, path, &matches);
 
-    array_init(return_value);
+	array_init(return_value);
 
-    if (retval == 0) {
-        RETURN_NULL();
-    }
+	if (retval == 0) {
+		RETURN_NULL();
+	}
 
-    array_init(return_value);
+	array_init(return_value);
 
-    for (i=0; i<retval; i++) {
-        add_next_index_string(return_value, matches[i], 1);
-    }
+	for (i=0; i<retval; i++) {
+		add_next_index_string(return_value, matches[i], 1);
+	}
 
 }
-/* }}} */
+/* }} } */
 
 /* {{{ proto boolean Augeas::rm(resource $augeas, string $path);
-       Removes a node and all it's children */
+	   Removes a node and all it's children */
 PHP_METHOD(Augeas, rm)
 {   
-    php_augeas *aug;
-    int path_len, value_len, retval;
-    char *path, *value;
+	php_augeas *aug;
+	int path_len, value_len, retval;
+	char *path, *value;
 
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &path, &path_len, &value, &value_len)) {
-        RETURN_FALSE;
-    }
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &path, &path_len, &value, &value_len)) {
+		RETURN_FALSE;
+	}
 
 	aug = _php_augeas_read_resource(getThis());
 
 	if (!aug) RETURN_NULL();
 
-    /* aug_rm returns the number of removed entries */
-    retval = aug_rm(aug->augeas, path);
+	/* aug_rm returns the number of removed entries */
+	retval = aug_rm(aug->augeas, path);
 
-    RETURN_LONG(retval);
+	RETURN_LONG(retval);
 }
 /* }}} */
 
 /* {{{  proto boolean Augeas::insert(resource $augeas, string $path, string $label, int $order);
-        Inserts a new sibling of path expression $path with label $label before or after $path, depending on $order. $path must match exactly one node in the tree. */
+		Inserts a new sibling of path expression $path with label $label before or after $path, depending on $order. $path must match exactly one node in the tree. */
 PHP_METHOD(Augeas, insert)
-{    
-    php_augeas *aug;
-    char *path, *label;
-    int retval, path_len, label_len, order;
+{	
+	php_augeas *aug;
+	char *path, *label;
+	int retval, path_len, label_len, order;
 
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ssl", &path, &path_len,
-        &label, &label_len, &order)) {
-        RETURN_FALSE;
-    }
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ssl", &path, &path_len,
+		&label, &label_len, &order)) {
+		RETURN_FALSE;
+	}
 
 	aug = _php_augeas_read_resource(getThis());
 	if (!aug) RETURN_NULL();
 
-    retval = aug_insert(aug->augeas, path, label, order);
+	retval = aug_insert(aug->augeas, path, label, order);
 
-    if (retval == 0) {
-        RETURN_TRUE;
-    } else {
-        RETURN_FALSE;
-    }
+	if (retval == 0) {
+		RETURN_TRUE;
+	} else {
+		RETURN_FALSE;
+	}
 }
 /* }}} */
 
 /* {{{  proto boolean Augeas::save(resource $augeas);
-        Saves the parts of the tree that have been changed into their respective files. */
+		Saves the parts of the tree that have been changed into their respective files. */
 PHP_METHOD(Augeas, save)
 {
-    php_augeas *aug;
-    zval *zaug;
-    int retval;
+	php_augeas *aug;
+	zval *zaug;
+	int retval;
 
 
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, NULL)) {
-        RETURN_FALSE;
-    }
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, NULL)) {
+		RETURN_FALSE;
+	}
 
 	aug = _php_augeas_read_resource(getThis());
 	if (!aug) RETURN_NULL();
 
-    retval = aug_save(aug->augeas);
+	retval = aug_save(aug->augeas);
 
-    if (retval == 0) {
-        RETURN_TRUE;
-    } else {
-        RETURN_FALSE;
-    }
+	if (retval == 0) {
+		RETURN_TRUE;
+	} else {
+		RETURN_FALSE;
+	}
 
 }
 /* }}} */
 
 /* {{{ proto void Augeas::__destruct();
-       Class destructor */
+	   Class destructor */
 PHP_METHOD(Augeas, __destruct)
 {
-    php_augeas *aug;
-    zval *zaug;
+	php_augeas *aug;
+	zval *zaug;
 
 	aug = _php_augeas_read_resource(getThis());
 	if (!aug) return;
 
-    aug_close(aug->augeas);
+	aug_close(aug->augeas);
 
 }
 /* }}} */
