@@ -293,7 +293,7 @@ PHP_METHOD(Augeas, set)
 }
 /* }}} */
 
-/* {{{  proto array Augeas::match(resource $augeas, string $path);
+/* {{{  proto array Augeas::match(string $path);
         Returns an array with all the matches */
 PHP_METHOD(Augeas, match)
 {
