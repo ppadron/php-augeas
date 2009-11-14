@@ -116,7 +116,7 @@ PHP_MINFO_FUNCTION(augeas)
 
 
 /* {{{ proto string augeas_init([string $root, [string $loadpath, [int $flags]]);
-       Initilizes an augeas resource  */
+       Initializes an augeas resource */
 PHP_FUNCTION(augeas_init)
 {
   char *root = "/";
