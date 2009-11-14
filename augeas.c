@@ -72,7 +72,7 @@ ZEND_BEGIN_ARG_INFO(arginfo_augeas_insert, 0)
     ZEND_ARG_INFO(0, augeas)
     ZEND_ARG_INFO(0, path)
     ZEND_ARG_INFO(0, label)
-    ZEND_ARG_INFO(0, before)
+    ZEND_ARG_INFO(0, order)
 ZEND_END_ARG_INFO();
 
 static
@@ -331,23 +331,23 @@ PHP_FUNCTION(augeas_set)
 /* }}} */
 
 
-/* {{{  proto boolean augeas_insert(resource $augeas, string $path, string $label, int $before);
-        Inserts a new sibling of path expression $path with label $label before or after $path, depending on $before. $path must match exactly one node in the tree. */
+/* {{{  proto boolean augeas_insert(resource $augeas, string $path, string $label, int $order);
+        Inserts a new sibling of path expression $path with label $label before or after $path, depending on $order. $path must match exactly one node in the tree. */
 PHP_FUNCTION(augeas_insert)
 {    
     php_augeas *aug;
     zval *zaug;
     char *path, *label;
-    int retval, path_len, label_len, before;
+    int retval, path_len, label_len, order;
 
     if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "rssl", &zaug, &path,
-        &path_len, &label, &label_len, &before)) {
+        &path_len, &label, &label_len, &order)) {
         RETURN_FALSE;
     }
 
     aug = (php_augeas *) zend_fetch_resource(&zaug TSRMLS_CC, -1, PHP_AUGEAS_RESOURCE_NAME, NULL, 1, le_augeas);
 
-    retval = aug_insert(aug->augeas, path, label, before);
+    retval = aug_insert(aug->augeas, path, label, order);
 
     if (retval == 0) {
         RETURN_TRUE;
