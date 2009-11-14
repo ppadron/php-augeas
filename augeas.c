@@ -183,7 +183,7 @@ PHP_MINFO_FUNCTION(augeas)
 }
 /* }}} */
 
-/* {{{ proto void Augeas::__construct() */
+/* {{{ proto void Augeas::__construct([string $root[, string $loadpath[, int $flags]]]) */
 PHP_METHOD(Augeas, __construct)
 {
   char *root = "/";
