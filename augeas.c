@@ -28,17 +28,71 @@
 
 static int le_augeas;
 
+/* {{{ ZEND_BEGIN_ARG_INFO
+ */
+static
+ZEND_BEGIN_ARG_INFO(arginfo_augeas_init, 0)
+    ZEND_ARG_INFO(0, root)
+    ZEND_ARG_INFO(0, loadpath)
+    ZEND_ARG_INFO(0, flags)
+ZEND_END_ARG_INFO();
+
+static
+ZEND_BEGIN_ARG_INFO(arginfo_augeas_get, 0)
+    ZEND_ARG_INFO(0, augeas)
+    ZEND_ARG_INFO(0, path)
+ZEND_END_ARG_INFO();
+
+static
+ZEND_BEGIN_ARG_INFO(arginfo_augeas_match, 0)
+    ZEND_ARG_INFO(0, augeas)
+    ZEND_ARG_INFO(0, path)
+ZEND_END_ARG_INFO();
+
+static
+ZEND_BEGIN_ARG_INFO(arginfo_augeas_set, 0)
+    ZEND_ARG_INFO(0, augeas)
+    ZEND_ARG_INFO(0, path)
+    ZEND_ARG_INFO(0, value)
+ZEND_END_ARG_INFO();
+
+static
+ZEND_BEGIN_ARG_INFO(arginfo_augeas_save, 0)
+    ZEND_ARG_INFO(0, augeas)
+ZEND_END_ARG_INFO();
+
+static
+ZEND_BEGIN_ARG_INFO(arginfo_augeas_rm, 0)
+    ZEND_ARG_INFO(0, augeas)
+    ZEND_ARG_INFO(0, path)
+ZEND_END_ARG_INFO();
+
+static
+ZEND_BEGIN_ARG_INFO(arginfo_augeas_insert, 0)
+    ZEND_ARG_INFO(0, augeas)
+    ZEND_ARG_INFO(0, path)
+    ZEND_ARG_INFO(0, label)
+    ZEND_ARG_INFO(0, before)
+ZEND_END_ARG_INFO();
+
+static
+ZEND_BEGIN_ARG_INFO(arginfo_augeas_close, 0)
+    ZEND_ARG_INFO(0, augeas)
+ZEND_END_ARG_INFO();
+/* }}} */
+
+
 /* {{{ augeas_functions[]
  */
 function_entry augeas_functions[] = {
-    PHP_FE(augeas_init,   NULL)
-    PHP_FE(augeas_get,    NULL)
-    PHP_FE(augeas_match,  NULL)
-    PHP_FE(augeas_set,    NULL)
-    PHP_FE(augeas_save,   NULL)
-    PHP_FE(augeas_rm,     NULL)
-    PHP_FE(augeas_insert, NULL)
-    PHP_FE(augeas_close,  NULL)
+    PHP_FE(augeas_init,   arginfo_augeas_init)
+    PHP_FE(augeas_get,    arginfo_augeas_get)
+    PHP_FE(augeas_match,  arginfo_augeas_match)
+    PHP_FE(augeas_set,    arginfo_augeas_set)
+    PHP_FE(augeas_save,   arginfo_augeas_save)
+    PHP_FE(augeas_rm,     arginfo_augeas_rm)
+    PHP_FE(augeas_insert, arginfo_augeas_insert)
+    PHP_FE(augeas_close,  arginfo_augeas_close)
 	{NULL, NULL, NULL}
 };
 /* }}} */
