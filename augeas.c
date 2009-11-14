@@ -130,6 +130,10 @@ PHP_FUNCTION(augeas_init)
     RETURN_FALSE;
   }
 
+  if (php_check_open_basedir(root TSRMLS_DC) != 0) {
+    RETURN_FALSE;
+  }
+
   aug = emalloc(sizeof(php_augeas));
   aug->augeas = aug_init(root, loadpath, flags);
 
