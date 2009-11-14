@@ -12,7 +12,7 @@
   | obtain it through the world-wide-web, please send a note to          |
   | license@php.net so we can mail you a copy immediately.               |
   +----------------------------------------------------------------------+
-  | Author:                                                              |
+  | Author: Pedro Padron <ppadron@php.net>                               |
   +----------------------------------------------------------------------+
 */
 
@@ -26,12 +26,9 @@
 #include "augeas.h"
 #include "php_augeas.h"
 
-/* True global resources - no need for thread safety here */
 static int le_augeas;
 
 /* {{{ augeas_functions[]
- *
- * Every user visible function must have an entry in augeas_functions[].
  */
 function_entry augeas_functions[] = {
     PHP_FE(augeas_init,   NULL)
@@ -66,7 +63,7 @@ zend_module_entry augeas_module_entry = {
 ZEND_GET_MODULE(augeas)
 #endif
 
-
+/* {{{ _php_augeas_dtor */
 static void _php_augeas_dtor(zend_rsrc_list_entry *rsrc TSRMLS_DC) {
 
     php_augeas *aug = (php_augeas *) rsrc->ptr;
@@ -76,6 +73,7 @@ static void _php_augeas_dtor(zend_rsrc_list_entry *rsrc TSRMLS_DC) {
     }
 
 }
+/* }}} */
 
 
 /* {{{ PHP_MINIT_FUNCTION
@@ -95,6 +93,7 @@ PHP_MINIT_FUNCTION(augeas)
 }
 /* }}} */
 
+
 /* {{{ PHP_MSHUTDOWN_FUNCTION
  */
 PHP_MSHUTDOWN_FUNCTION(augeas)
@@ -102,6 +101,7 @@ PHP_MSHUTDOWN_FUNCTION(augeas)
 	return SUCCESS;
 }
 /* }}} */
+
 
 /* {{{ PHP_MINFO_FUNCTION
  */
@@ -116,7 +116,7 @@ PHP_MINFO_FUNCTION(augeas)
 
 
 /* {{{ proto string augeas_init([string $root, [string $loadpath, [int $flags]]);
-  Initilizes an augeas resource  */
+       Initilizes an augeas resource  */
 PHP_FUNCTION(augeas_init) {
 
   char *root = "/";
@@ -138,9 +138,8 @@ PHP_FUNCTION(augeas_init) {
 }
 
 
-/**
- * proto string augeas_get(resource $augeas, string $path);
- */
+/* {{{  proto string augeas_get(resource $augeas, string $path);
+        Returns the node value. Will throw E_WARNING if path is invalid. */
 PHP_FUNCTION(augeas_get) {
 
     php_augeas *aug;
@@ -184,11 +183,11 @@ PHP_FUNCTION(augeas_get) {
     }
     
 }
+/* }}} */
 
 
-/**
- * proto array augeas_match(resource $augeas, string $path);
- */
+/* {{{  proto array augeas_match(resource $augeas, string $path);
+        Returns an array with all the matches */
 PHP_FUNCTION(augeas_match) {
 
     php_augeas *aug;
@@ -221,10 +220,11 @@ PHP_FUNCTION(augeas_match) {
     }
 
 }
+/* }}} */
 
-/**
- * proto array augeas_rm(resource $augeas, string $path);
- */
+
+/* {{{ proto array augeas_rm(resource $augeas, string $path);
+       Removes a node and all it's children */
 PHP_FUNCTION(augeas_rm) {
     
     php_augeas *aug;
@@ -243,11 +243,11 @@ PHP_FUNCTION(augeas_rm) {
 
     RETURN_LONG(retval);
 }
+/* }}} */
 
 
-/**
- * proto array augeas_set(resource $augeas, string $path);
- */
+/* {{{ boolean array augeas_set(resource $augeas, string $path, string $value);
+       Sets the value of $path to $value */
 PHP_FUNCTION(augeas_set) {
 
     php_augeas *aug;
@@ -270,11 +270,10 @@ PHP_FUNCTION(augeas_set) {
     }
 
 }
+/* }}} */
 
-
-/**
- * proto augeas_insert(resource $augeas, string $path, string $label, int $before);
- */
+/* {{{  proto boolean augeas_insert(resource $augeas, string $path, string $label, int $before);
+        Inserts a new sibling of path expression $path with label $label before or after $path, depending on $before. $path must match exactly one node in the tree. */
 PHP_FUNCTION(augeas_insert) {
     
     php_augeas *aug;
@@ -300,9 +299,8 @@ PHP_FUNCTION(augeas_insert) {
 }
 
 
-/**
- * proto boolean augeas_save(resource $augeas);
- */
+/* {{{  proto boolean augeas_save(resource $augeas);
+        Saves the parts of the tree that have been changed into their respective files. */
 PHP_FUNCTION(augeas_save) {
 
     php_augeas *aug;
@@ -324,10 +322,11 @@ PHP_FUNCTION(augeas_save) {
     }
 
 }
+/* }}} */
 
-/**
- * proto boolean augeas_close(resource $augeas);
- */
+
+/* {{{ proto boolean augeas_close(resource $augeas);
+       Closes an Augeas resource */
 PHP_FUNCTION(augeas_close) {
 
     php_augeas *aug;
@@ -343,7 +342,7 @@ PHP_FUNCTION(augeas_close) {
 
 
 }
-
+/* }}} */
 
 /*
  * Local variables:
