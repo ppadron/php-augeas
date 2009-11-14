@@ -413,10 +413,6 @@ PHP_METHOD(Augeas, __destruct)
     php_augeas *aug;
     zval *zaug;
 
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "r", &zaug)) {
-        RETURN_FALSE;
-    }
-
 	aug = _php_augeas_read_resource(getThis());
 	if (!aug) return;
 
