@@ -204,6 +204,9 @@ PHP_METHOD(Augeas, __construct)
 	}
 
 	aug = emalloc(sizeof(php_augeas));
+
+	if (!aug) php_error_docref(NULL TSRMLS_CC, E_WARNING, "could not allocate memory for augeas resource");
+
 	aug->augeas = aug_init(root, loadpath, flags);
 
 	int resource_id = ZEND_REGISTER_RESOURCE(resource, aug, le_augeas);
