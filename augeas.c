@@ -34,7 +34,7 @@ zend_class_entry *augeas_ce_Augeas;
 
 /* {{{ ZEND_BEGIN_ARG_INFO */
 static
-ZEND_BEGIN_ARG_INFO(arginfo_Augeas__construct, 0)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_Augeas__construct, 0, 0, 0)
 	ZEND_ARG_INFO(0, root)
 	ZEND_ARG_INFO(0, loadpath)
 	ZEND_ARG_INFO(0, flags)
