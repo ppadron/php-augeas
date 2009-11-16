@@ -188,7 +188,7 @@ PHP_METHOD(Augeas, __construct)
 {
 	char *root = "/";
 	char *loadpath = "";
-	int root_len, loadpath_len;
+	int root_len, loadpath_len, resource_id;
 	long flags = AUG_NONE;
 	php_augeas *aug;
 	zval *resource;
@@ -209,7 +209,7 @@ PHP_METHOD(Augeas, __construct)
 
 	aug->augeas = aug_init(root, loadpath, flags);
 
-	int resource_id = ZEND_REGISTER_RESOURCE(resource, aug, le_augeas);
+	resource_id = ZEND_REGISTER_RESOURCE(resource, aug, le_augeas);
 
 	this = getThis();
 
