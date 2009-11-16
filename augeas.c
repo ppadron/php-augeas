@@ -354,15 +354,16 @@ PHP_METHOD(Augeas, rm)
 }
 /* }}} */
 
-/* {{{  proto boolean Augeas::insert(resource $augeas, string $path, string $label, int $order);
+/* {{{  proto boolean Augeas::insert(resource $augeas, string $path, string $label[, int $order]);
 		Inserts a new sibling of path expression $path with label $label before or after $path, depending on $order. $path must match exactly one node in the tree. */
 PHP_METHOD(Augeas, insert)
 {	
 	php_augeas *aug;
 	char *path, *label;
-	int retval, path_len, label_len, order;
+	int retval, path_len, label_len;
+	int order = 0;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ssl", &path, &path_len,
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ss|l", &path, &path_len,
 		&label, &label_len, &order)) {
 		RETURN_FALSE;
 	}
