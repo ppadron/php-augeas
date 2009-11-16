@@ -222,7 +222,7 @@ PHP_METHOD(Augeas, __construct)
 }
 /* }}} */
 
-/* { {{ proto string Augeas::get(string $path) */
+/* {{{ proto string Augeas::get(string $path) */
 PHP_METHOD(Augeas, get)
 {
 	char *path, *value;
@@ -269,7 +269,7 @@ PHP_METHOD(Augeas, get)
 }
 /* }}} */
 
-/* { {{ proto boolean Augeas::set(resource $augeas, string $path, string $value);
+/* {{{ proto boolean Augeas::set(resource $augeas, string $path, string $value);
 	   Sets the value of $path to $value */
 PHP_METHOD(Augeas, set)
 {
@@ -329,7 +329,7 @@ PHP_METHOD(Augeas, match)
 	}
 
 }
-/* }} } */
+/* }}} */
 
 /* {{{ proto boolean Augeas::rm(resource $augeas, string $path);
 	   Removes a node and all it's children */
