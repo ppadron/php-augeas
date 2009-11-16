@@ -389,10 +389,9 @@ PHP_METHOD(Augeas, save)
 	zval *zaug;
 	int retval;
 
-
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, NULL)) {
-		RETURN_FALSE;
-	}
+    if (ZEND_NUM_ARGS()) {
+        WRONG_PARAM_COUNT;
+    }
 
 	aug = _php_augeas_read_resource(getThis());
 	if (!aug) RETURN_NULL();
