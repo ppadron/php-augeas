@@ -66,7 +66,7 @@ ZEND_BEGIN_ARG_INFO(arginfo_Augeas_rm, 0)
 ZEND_END_ARG_INFO();
 
 static
-ZEND_BEGIN_ARG_INFO(arginfo_Augeas_insert, 0)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_Augeas_insert, 0, 0, 2)
 	ZEND_ARG_INFO(0, path)
 	ZEND_ARG_INFO(0, label)
 	ZEND_ARG_INFO(0, order)
