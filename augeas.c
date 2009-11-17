@@ -128,8 +128,7 @@ static php_augeas * _php_augeas_read_resource(zval *object)
 	zaug = zend_read_property(Z_OBJCE_P(object), object, "handle", strlen("handle"), 0 TSRMLS_DC);
 
 	if (Z_TYPE_P(zaug) != IS_RESOURCE) {
-		php_error_docref(NULL TSRMLS_CC, E_WARNING, "could not read augeas resource");
-		return NULL;
+		zend_throw_exception(augeas_ce_AugeasException, "could not read augeas resource");
 	}
 
 	return_value = (php_augeas *) zend_fetch_resource(&zaug TSRMLS_CC, -1, PHP_AUGEAS_RESOURCE_NAME, NULL, 1, le_augeas);
@@ -211,7 +210,7 @@ PHP_METHOD(Augeas, __construct)
 
 	aug = emalloc(sizeof(php_augeas));
 
-	if (!aug) php_error_docref(NULL TSRMLS_CC, E_WARNING, "could not allocate memory for augeas resource");
+	if (!aug) zend_throw_exception(augeas_ce_AugeasException, "could not allocate memory for augeas resource");
 
 	aug->augeas = aug_init(root, loadpath, flags);
 
@@ -220,7 +219,7 @@ PHP_METHOD(Augeas, __construct)
 	this = getThis();
 
 	if (this == NULL) {
-		php_error_docref(NULL TSRMLS_CC, E_WARNING, "could not initialize augeas resource");
+		zend_throw_exception(augeas_ce_AugeasException, "could not initialize augeas resource");
 	}
 
 	add_property_resource(this, "handle", resource_id);
@@ -267,8 +266,7 @@ PHP_METHOD(Augeas, get)
 			break;
 
 		default:
-			php_error_docref(NULL TSRMLS_CC, E_WARNING, "specified path is invalid");
-			RETURN_NULL();
+			zend_throw_exception(augeas_ce_AugeasException, "specified path is invalid");
 			break;
 	}
 	
