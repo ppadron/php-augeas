@@ -38,6 +38,7 @@ typedef struct _php_augeas {
 } php_augeas;
 
 extern zend_class_entry* augeas_ce_Augeas;
+extern zend_class_entry* augeas_ce_AugeasException;
 
 PHP_MINIT_FUNCTION(augeas);
 PHP_MSHUTDOWN_FUNCTION(augeas);
