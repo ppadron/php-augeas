@@ -30,6 +30,7 @@ static int le_augeas;
 
 /* {{{ zend_class_entry */
 zend_class_entry *augeas_ce_Augeas;
+zend_class_entry *augeas_ce_AugeasException;
 /* }}} */
 
 /* {{{ ZEND_BEGIN_ARG_INFO */
@@ -144,6 +145,12 @@ PHP_MINIT_FUNCTION(augeas)
 	le_augeas = zend_register_list_destructors_ex(_php_augeas_dtor, NULL, PHP_AUGEAS_RESOURCE_NAME, module_number); 
 
 	zend_class_entry ce;
+	zend_class_entry *ce_exception;
+
+	/* Register AugeasException class (inherits Exception) */
+	INIT_CLASS_ENTRY(ce, "AugeasException", NULL);
+	ce_exception = zend_exception_get_default();
+	augeas_ce_AugeasException = zend_register_internal_class_ex(&ce, ce_exception, ce_exception->name TSRMLS_DC); 
 
 	/* Register Augeas class */
 	INIT_CLASS_ENTRY(ce, "Augeas", augeas_methods);
