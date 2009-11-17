@@ -162,8 +162,8 @@ PHP_MINIT_FUNCTION(augeas)
 	zend_declare_class_constant_long(augeas_ce_Augeas, "AUGEAS_TYPE_CHECK", sizeof("AUGEAS_TYPE_CHECK")-1, AUG_TYPE_CHECK TSRMLS_DC);
 	zend_declare_class_constant_long(augeas_ce_Augeas, "AUGEAS_NO_STDINC", sizeof("AUGEAS_NO_STDINC")-1, AUG_NO_STDINC TSRMLS_DC);
 
-	zend_declare_class_constant_long(augeas_ce_Augeas, "AUGEAS_INSERT_BEFORE", sizeof("AUGEAS_INSERT_BEFORE")-1, 0 TSRMLS_DC);
-	zend_declare_class_constant_long(augeas_ce_Augeas, "AUGEAS_INSERT_AFTER", sizeof("AUGEAS_INSERT_AFTER")-1, 1 TSRMLS_DC);
+	zend_declare_class_constant_long(augeas_ce_Augeas, "AUGEAS_INSERT_BEFORE", sizeof("AUGEAS_INSERT_BEFORE")-1, 1 TSRMLS_DC);
+	zend_declare_class_constant_long(augeas_ce_Augeas, "AUGEAS_INSERT_AFTER", sizeof("AUGEAS_INSERT_AFTER")-1, 0 TSRMLS_DC);
  
 	return SUCCESS;
 }
