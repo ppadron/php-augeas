@@ -28,4 +28,3 @@ missing
 mkinstalldirs
 modules/
 run-tests.php
-tests/*.php
