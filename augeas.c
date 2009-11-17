@@ -148,7 +148,6 @@ PHP_MINIT_FUNCTION(augeas)
 	/* Register Augeas class */
 	INIT_CLASS_ENTRY(ce, "Augeas", augeas_methods);
 	augeas_ce_Augeas = zend_register_internal_class(&ce TSRMLS_CC);
-	augeas_ce_Augeas->ce_flags |= ZEND_ACC_FINAL_CLASS;
 
 	/* Register Augeas class constants */
 	zend_declare_class_constant_long(augeas_ce_Augeas, "AUGEAS_NONE", sizeof("AUGEAS_NONE")-1, AUG_NONE TSRMLS_DC);
