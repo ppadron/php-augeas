@@ -5,23 +5,26 @@ require_once "PHPUnit/Framework/TestCase.php";
 class AugeasMatchTest extends PHPUnit_Framework_TestCase
 {
 
+    public function setUp()
+    {
+	$this->augeas = new Augeas(dirname(__FILE__) . "/root");
+    }
+
     public function testShouldReturnEmptyArrayIfNoMatch()
     {
-	$augeas = new Augeas("root");
-	$this->assertEquals(array(), $augeas->match("/files/non_existent_directory"));
+	$this->assertEquals(array(), $this->augeas->match("/files/non_existent_directory"));
     }
 
     public function testShoulReturnArrayWithMatches()
     {
-	$augeas = new Augeas("root");
 	$expectedArray = array("/files/etc/hosts");
-	$this->assertEquals($expectedArray, $augeas->match("/files/etc/*"));
+	$this->assertEquals($expectedArray, $this->augeas->match("/files/etc/*"));
     }
 
     public function testShouldThrowExceptionIfPathIsInvalid()
     {
-	$augeas = new Augeas("root");
-	$this->assertEquals(array(), $augeas->match("OMG TOTALLY INVALID PATH"));
+	$this->expectedException = "AugeasException";
+	$this->augeas->match("OMG TOTALLY INVALID PATH");
     }
 
 }
