@@ -125,7 +125,7 @@ static php_augeas * _php_augeas_read_resource(zval *object)
 {
 	zval *zaug;
 	php_augeas *return_value;
-	zaug = zend_read_property(Z_OBJCE_P(object), object, "handle", strlen("handle"), 0 TSRMLS_DC);
+	zaug = zend_read_property(Z_OBJCE_P(object), object, "handle", strlen("handle"), 1 TSRMLS_DC);
 
 	if (Z_TYPE_P(zaug) != IS_RESOURCE) {
 		return NULL;
