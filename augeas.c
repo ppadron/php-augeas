@@ -323,6 +323,11 @@ PHP_METHOD(Augeas, match)
 	retval = aug_match(aug->augeas, path, &matches);
 
 	array_init(return_value);
+
+	if (retval == -1) {
+		zend_throw_exception(augeas_ce_AugeasException, "the specified path is invalid");
+		return;
+	}
 	
 	if (retval > 0) {
 		for (i=0; i<retval; i++) {
