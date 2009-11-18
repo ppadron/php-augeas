@@ -322,15 +322,15 @@ PHP_METHOD(Augeas, match)
 
 	retval = aug_match(aug->augeas, path, &matches);
 
-	if (retval == 0) {
-		RETURN_NULL();
-	}
-
 	array_init(return_value);
-
-	for (i=0; i<retval; i++) {
-		add_next_index_string(return_value, matches[i], 1);
+	
+	if (retval > 0) {
+		for (i=0; i<retval; i++) {
+			add_next_index_string(return_value, matches[i], 1);
+		}
 	}
+
+	/* if no matches were found, an empty array (return_value) is returned */
 
 }
 /* }}} */
