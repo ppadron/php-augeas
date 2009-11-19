@@ -32,10 +32,10 @@ extern zend_module_entry augeas_module_entry;
 #include "TSRM.h"
 #endif
 
-
-typedef struct _php_augeas {
+typedef struct _php_augeas_object {
+	zend_object zo;
 	augeas *augeas;
-} php_augeas;
+} php_augeas_object;
 
 extern zend_class_entry* augeas_ce_Augeas;
 extern zend_class_entry* augeas_ce_AugeasException;
@@ -47,15 +47,12 @@ PHP_RSHUTDOWN_FUNCTION(augeas);
 PHP_MINFO_FUNCTION(augeas);
 
 PHP_METHOD(Augeas, __construct);
-PHP_METHOD(Augeas, __destruct);
 PHP_METHOD(Augeas, get);
 PHP_METHOD(Augeas, set);
 PHP_METHOD(Augeas, match);
 PHP_METHOD(Augeas, save);
 PHP_METHOD(Augeas, rm);
 PHP_METHOD(Augeas, insert);
-
-#define PHP_AUGEAS_RESOURCE_NAME "augeas"
 
 #ifdef ZTS
 #define AUGEAS_G(v) TSRMG(augeas_globals_id, zend_augeas_globals *, v)

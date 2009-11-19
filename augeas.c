@@ -26,8 +26,6 @@
 #include "augeas.h"
 #include "php_augeas.h"
 
-static int le_augeas;
-
 /* {{{ zend_class_entry */
 zend_class_entry *augeas_ce_Augeas;
 zend_class_entry *augeas_ce_AugeasException;
@@ -77,7 +75,6 @@ ZEND_END_ARG_INFO();
 /* {{{ augeas_methods */
 static zend_function_entry augeas_methods[] = {
 	PHP_ME(Augeas, __construct, arginfo_Augeas__construct, ZEND_ACC_PUBLIC)
-	PHP_ME(Augeas, __destruct, NULL, ZEND_ACC_PUBLIC)
 	PHP_ME(Augeas, get, arginfo_Augeas_get, ZEND_ACC_PUBLIC)
 	PHP_ME(Augeas, set, arginfo_Augeas_set, ZEND_ACC_PUBLIC)
 	PHP_ME(Augeas, match, arginfo_Augeas_match, ZEND_ACC_PUBLIC)
@@ -108,32 +105,56 @@ zend_module_entry augeas_module_entry = {
 ZEND_GET_MODULE(augeas)
 #endif
 
-/* {{{ _php_augeas_dtor */
-static void _php_augeas_dtor(zend_rsrc_list_entry *rsrc TSRMLS_DC)
+/* {{{ AUGEAS_FROM_OBJECT */
+#define AUGEAS_FROM_OBJECT(intern, object) \
+    { \
+        php_augeas_object *obj = (php_augeas_object*) zend_object_store_get_object(object TSRMLS_CC); \
+        intern = obj->augeas; \
+        if (!intern) { \
+			zend_throw_exception(augeas_ce_AugeasException, "Invalid or unitialized Augeas object"); \
+            RETURN_FALSE; \
+        } \
+    }
+/* }}} */
+
+/* {{{ augeas_object_dtor() */
+static void augeas_object_dtor(void *object, zend_object_handle handle TSRMLS_DC)
 {
-	php_augeas *aug = (php_augeas *) rsrc->ptr;
+	php_augeas_object *intern;
 
-	if (aug) {
-		efree(aug);
-	}
+	intern = (php_augeas_object *) object;
 
+	zend_hash_destroy(intern->zo.properties);
+	FREE_HASHTABLE(intern->zo.properties);
+
+	if (intern->augeas) {
+		aug_close(intern->augeas);
+	}	
+
+	efree(object);
 }
 /* }}} */
 
-/* {{{ _php_augeas_read_resource() */
-static php_augeas * _php_augeas_read_resource(zval *object)
+/* {{{ augeas_object_new() */
+static zend_object_value augeas_object_new(zend_class_entry *class_type TSRMLS_DC)
 {
-	zval *zaug;
-	php_augeas *return_value;
-	zaug = zend_read_property(Z_OBJCE_P(object), object, "handle", strlen("handle"), 1 TSRMLS_DC);
+	zend_object_value retval;
+	php_augeas_object *intern;
+	zval *tmp;
 
-	if (Z_TYPE_P(zaug) != IS_RESOURCE) {
-		return NULL;
-	}
+	intern = emalloc(sizeof(php_augeas_object));
+	memset(intern, 0, sizeof(php_augeas_object));
+	intern->zo.ce = class_type;
 
-	return_value = (php_augeas *) zend_fetch_resource(&zaug TSRMLS_CC, -1, PHP_AUGEAS_RESOURCE_NAME, NULL, 1, le_augeas);
+	ALLOC_HASHTABLE(intern->zo.properties);
+	zend_hash_init(intern->zo.properties, 0, NULL, ZVAL_PTR_DTOR, 0);
+	zend_hash_copy(intern->zo.properties, &class_type->default_properties, (copy_ctor_func_t) zval_add_ref, (void *) &tmp, sizeof(zval *));
 
-	return return_value;
+	retval.handle = zend_objects_store_put(intern, augeas_object_dtor, NULL, NULL TSRMLS_CC);
+	retval.handlers = zend_get_std_object_handlers();
+
+	return retval;
+	
 }
 /* }}} */
 
@@ -141,8 +162,6 @@ static php_augeas * _php_augeas_read_resource(zval *object)
  */
 PHP_MINIT_FUNCTION(augeas)
 {
-	le_augeas = zend_register_list_destructors_ex(_php_augeas_dtor, NULL, PHP_AUGEAS_RESOURCE_NAME, module_number); 
-
 	zend_class_entry ce;
 	zend_class_entry *ce_exception;
 
@@ -154,6 +173,7 @@ PHP_MINIT_FUNCTION(augeas)
 	/* Register Augeas class */
 	INIT_CLASS_ENTRY(ce, "Augeas", augeas_methods);
 	augeas_ce_Augeas = zend_register_internal_class(&ce TSRMLS_CC);
+	augeas_ce_Augeas->create_object = augeas_object_new;
 
 	/* Register Augeas class constants */
 	zend_declare_class_constant_long(augeas_ce_Augeas, "AUGEAS_NONE", sizeof("AUGEAS_NONE")-1, AUG_NONE TSRMLS_DC);
@@ -195,7 +215,7 @@ PHP_METHOD(Augeas, __construct)
 	char *loadpath = "";
 	int root_len, loadpath_len, resource_id;
 	long flags = AUG_NONE;
-	php_augeas *aug;
+	php_augeas_object *obj;
 	zval *resource;
 	zval *this;
 
@@ -208,21 +228,10 @@ PHP_METHOD(Augeas, __construct)
 		RETURN_FALSE;
 	}
 
-	aug = emalloc(sizeof(php_augeas));
+	obj = (php_augeas_object *) zend_object_store_get_object(getThis() TSRMLS_DC);
+	obj->augeas = aug_init(root, loadpath, flags);
 
-	if (!aug) zend_throw_exception(augeas_ce_AugeasException, "could not allocate memory for augeas resource");
-
-	aug->augeas = aug_init(root, loadpath, flags);
-
-	resource_id = ZEND_REGISTER_RESOURCE(resource, aug, le_augeas);
-
-	this = getThis();
-
-	if (this == NULL) {
-		zend_throw_exception(augeas_ce_AugeasException, "could not initialize augeas resource");
-	}
-
-	add_property_resource(this, "handle", resource_id);
+	if (!obj->augeas) zend_throw_exception(augeas_ce_AugeasException, "could not initialize augeas resource");
 
 }
 /* }}} */
@@ -233,7 +242,8 @@ PHP_METHOD(Augeas, get)
 	char *path, *value;
 	char **matches;
 	int path_len, retval;
-	php_augeas *aug;
+	php_augeas_object *obj;
+	augeas *aug_intern;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &path, &path_len) == FAILURE) {
 		RETURN_FALSE;
@@ -243,11 +253,9 @@ PHP_METHOD(Augeas, get)
 		RETURN_FALSE;
 	}   
 
-	aug = _php_augeas_read_resource(getThis());
+	AUGEAS_FROM_OBJECT(aug_intern, getThis());
 
-	if (!aug) RETURN_NULL();
-
-	retval = aug_get(aug->augeas, path, &value);
+	retval = aug_get(aug_intern, path, &value);
 
 	switch (retval) {
 
@@ -277,19 +285,17 @@ PHP_METHOD(Augeas, get)
 	   Sets the value of $path to $value */
 PHP_METHOD(Augeas, set)
 {
-	php_augeas *aug;
 	int path_len, value_len, retval;
 	char *path, *value;
+	augeas *aug_intern;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ss", &path, &path_len, &value, &value_len)) {
 		RETURN_FALSE;
 	}
 
-	aug = _php_augeas_read_resource(getThis());
+	AUGEAS_FROM_OBJECT(aug_intern, getThis());
 
-	if (!aug) RETURN_NULL();
-
-	retval = aug_set(aug->augeas, path, value);
+	retval = aug_set(aug_intern, path, value);
 
 	if (retval == 0) {
 		RETURN_TRUE;
@@ -304,11 +310,11 @@ PHP_METHOD(Augeas, set)
 		Returns an array with all the matches */
 PHP_METHOD(Augeas, match)
 {
-	php_augeas *aug;
 	int i;
 	char *path;
 	char *value;
 	char **matches;
+	augeas *aug_intern;
 
 	int path_len, retval;
 
@@ -316,11 +322,9 @@ PHP_METHOD(Augeas, match)
 		RETURN_FALSE;
 	}
 
-	aug = _php_augeas_read_resource(getThis());
+	AUGEAS_FROM_OBJECT(aug_intern, getThis());
 
-	if (!aug) RETURN_NULL();
-
-	retval = aug_match(aug->augeas, path, &matches);
+	retval = aug_match(aug_intern, path, &matches);
 
 	array_init(return_value);
 
@@ -344,20 +348,18 @@ PHP_METHOD(Augeas, match)
 	   Removes a node and all it's children */
 PHP_METHOD(Augeas, rm)
 {   
-	php_augeas *aug;
 	int path_len, value_len, retval;
 	char *path, *value;
+	augeas *aug_intern;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &path, &path_len, &value, &value_len)) {
 		RETURN_FALSE;
 	}
 
-	aug = _php_augeas_read_resource(getThis());
-
-	if (!aug) RETURN_NULL();
+	AUGEAS_FROM_OBJECT(aug_intern, getThis());
 
 	/* aug_rm returns the number of removed entries */
-	retval = aug_rm(aug->augeas, path);
+	retval = aug_rm(aug_intern, path);
 
 	RETURN_LONG(retval);
 }
@@ -367,20 +369,19 @@ PHP_METHOD(Augeas, rm)
 		Inserts a new sibling of path expression $path with label $label before or after $path, depending on $order. $path must match exactly one node in the tree. */
 PHP_METHOD(Augeas, insert)
 {	
-	php_augeas *aug;
 	char *path, *label;
 	int retval, path_len, label_len;
 	int order = 0;
+	augeas *aug_intern;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ss|l", &path, &path_len,
 		&label, &label_len, &order)) {
 		RETURN_FALSE;
 	}
 
-	aug = _php_augeas_read_resource(getThis());
-	if (!aug) RETURN_NULL();
+	AUGEAS_FROM_OBJECT(aug_intern, getThis());
 
-	retval = aug_insert(aug->augeas, path, label, order);
+	retval = aug_insert(aug_intern, path, label, order);
 
 	if (retval == 0) {
 		RETURN_TRUE;
@@ -394,39 +395,23 @@ PHP_METHOD(Augeas, insert)
 		Saves the parts of the tree that have been changed into their respective files. */
 PHP_METHOD(Augeas, save)
 {
-	php_augeas *aug;
 	zval *zaug;
 	int retval;
+	augeas *aug_intern;
 
     if (ZEND_NUM_ARGS()) {
         WRONG_PARAM_COUNT;
     }
 
-	aug = _php_augeas_read_resource(getThis());
-	if (!aug) RETURN_NULL();
+	AUGEAS_FROM_OBJECT(aug_intern, getThis());
 
-	retval = aug_save(aug->augeas);
+	retval = aug_save(aug_intern);
 
 	if (retval == 0) {
 		RETURN_TRUE;
 	} else {
 		RETURN_FALSE;
 	}
-
-}
-/* }}} */
-
-/* {{{ proto void Augeas::__destruct();
-	   Class destructor */
-PHP_METHOD(Augeas, __destruct)
-{
-	php_augeas *aug;
-	zval *zaug;
-
-	aug = _php_augeas_read_resource(getThis());
-	if (!aug) return;
-
-	aug_close(aug->augeas);
 
 }
 /* }}} */
