@@ -11,11 +11,12 @@
   <email>ppadron@php.net</email>
   <active>yes</active>
  </lead>
- <date>2009-11-18</date>
- <version><release>0.2</release><api>0.2</api></version>
+ <date>2009-11-19</date>
+ <version><release>0.3</release><api>0.2</api></version>
  <stability><release>beta</release><api>beta</api></stability>
  <license>PHP License</license>
- <notes>- Extension is now totally object-oriented
+ <notes>- private property Augeas::$handle no longer exists
+- resource type is no longer used
  </notes>
  <contents>
   <dir name="/">
@@ -52,5 +53,19 @@
  </dependencies>
  <providesextension>augeas</providesextension>
  <extsrcrelease/>
- <changelog></changelog>
+ <changelog>
+  <release>
+   <version>
+    <release>0.2</release>
+    <api>0.2</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <date>2009-11-18</date>
+   <license>PHP License</license>
+   <notes>- Extension is now totally object-oriented</notes>
+  </release>
+ </changelog>
 </package>

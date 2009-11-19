@@ -96,7 +96,7 @@ zend_module_entry augeas_module_entry = {
 	NULL,
 	NULL,
 	PHP_MINFO(augeas),
-	"0.1",
+	"0.3",
 	STANDARD_MODULE_PROPERTIES
 };
 /* }}} */
