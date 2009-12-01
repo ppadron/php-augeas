@@ -103,7 +103,7 @@ zend_module_entry augeas_module_entry = {
 	NULL,
 	NULL,
 	PHP_MINFO(augeas),
-	"0.3",
+	PHP_AUGEAS_VERSION,
 	STANDARD_MODULE_PROPERTIES
 };
 /* }}} */
@@ -210,6 +210,7 @@ PHP_MINFO_FUNCTION(augeas)
 {
 	php_info_print_table_start();
 	php_info_print_table_header(2, "augeas support", "enabled");
+	php_info_print_table_row(2, "augeas version", PHP_AUGEAS_VERSION);
 	php_info_print_table_end();
 
 }
