@@ -65,6 +65,12 @@ ZEND_BEGIN_ARG_INFO(arginfo_Augeas_rm, 0)
 ZEND_END_ARG_INFO();
 
 static
+ZEND_BEGIN_ARG_INFO(arginfo_Augeas_mv, 0)
+	ZEND_ARG_INFO(0, source)
+	ZEND_ARG_INFO(0, destination)
+ZEND_END_ARG_INFO();
+
+static
 ZEND_BEGIN_ARG_INFO_EX(arginfo_Augeas_insert, 0, 0, 2)
 	ZEND_ARG_INFO(0, path)
 	ZEND_ARG_INFO(0, label)
@@ -80,10 +86,11 @@ static zend_function_entry augeas_methods[] = {
 	PHP_ME(Augeas, match, arginfo_Augeas_match, ZEND_ACC_PUBLIC)
 	PHP_ME(Augeas, rm, arginfo_Augeas_rm, ZEND_ACC_PUBLIC)
 	PHP_ME(Augeas, save, arginfo_Augeas_save, ZEND_ACC_PUBLIC)
+	PHP_ME(Augeas, mv, arginfo_Augeas_mv, ZEND_ACC_PUBLIC)
 	PHP_ME(Augeas, insert, arginfo_Augeas_insert, ZEND_ACC_PUBLIC)
 	{ NULL, NULL, NULL }
 };
-/* }}} */
+/* }}} */ 
 
 /* {{{ augeas_module_entry
  */
@@ -363,9 +370,34 @@ PHP_METHOD(Augeas, rm)
 
 	RETURN_LONG(retval);
 }
+/* }}} * /
+
+/* {{{ proto boolean Augeas::mv(string $source, string $destination);
+       Moves $source node to $destination. If $destination exists, it will be overwritten. */
+PHP_METHOD(Augeas, mv)
+{
+	char *src, *dst;
+	int src_len, dst_len, retval;
+	augeas *aug_intern;
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ss", &src, &src_len, &dst, &dst_len)) {
+		RETURN_FALSE;
+	}
+
+	AUGEAS_FROM_OBJECT(aug_intern, getThis());
+
+	retval = aug_mv(aug_intern, src, dst);
+
+	if (retval == 0) {
+		RETURN_TRUE;
+	} else {
+		RETURN_FALSE;
+	}
+
+}
 /* }}} */
 
-/* {{{  proto boolean Augeas::insert(string $path, string $label[, int $order]);
+/*  {{{ proto boolean Augeas::insert(string $path, string $label[, int $order]);
 		Inserts a new sibling of path expression $path with label $label before or after $path, depending on $order. $path must match exactly one node in the tree. */
 PHP_METHOD(Augeas, insert)
 {	
@@ -390,6 +422,7 @@ PHP_METHOD(Augeas, insert)
 	}
 }
 /* }}} */
+
 
 /* {{{  proto boolean Augeas::save();
 		Saves the parts of the tree that have been changed into their respective files. */

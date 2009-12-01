@@ -53,6 +53,7 @@ PHP_METHOD(Augeas, match);
 PHP_METHOD(Augeas, save);
 PHP_METHOD(Augeas, rm);
 PHP_METHOD(Augeas, insert);
+PHP_METHOD(Augeas, mv);
 
 #ifdef ZTS
 #define AUGEAS_G(v) TSRMG(augeas_globals_id, zend_augeas_globals *, v)
