@@ -11,12 +11,12 @@
   <email>ppadron@php.net</email>
   <active>yes</active>
  </lead>
- <date>2009-11-19</date>
- <version><release>0.3</release><api>0.2</api></version>
+ <date>2009-12-01</date>
+ <version><release>0.4.0</release><api>0.4.0</api></version>
  <stability><release>beta</release><api>beta</api></stability>
  <license>PHP License</license>
- <notes>- private property Augeas::$handle no longer exists
-- resource type is no longer used
+ <notes>- new method Augeas::mv()
+- added test suite AllTests.php
  </notes>
  <contents>
   <dir name="/">
@@ -33,6 +33,8 @@
     <file role="test" name="AugeasInsertTest.php"/>
     <file role="test" name="AugeasMatchTest.php"/>
     <file role="test" name="AugeasTest.php"/>
+    <file role="test" name="AugeasMvTest.php"/>
+    <file role="test" name="AllTests.php"/>
    </dir> <!-- /tests -->
    <file role="src" name="augeas.c"/>
    <file role="src" name="config.m4"/>
@@ -54,6 +56,19 @@
  <providesextension>augeas</providesextension>
  <extsrcrelease/>
  <changelog>
+  <release>
+   <version>
+    <release>0.3</release>
+    <api>0.3</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <notes>- private property Augeas::$handle no longer exists
+- resource type is no longer used
+   </notes>
+  </release>
   <release>
    <version>
     <release>0.2</release>
