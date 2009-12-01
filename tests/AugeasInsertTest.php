@@ -7,7 +7,7 @@ class AugeasInsertTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-	$this->augeas = new Augeas(dirname(__FILE__) . "/root", dirname(__FILE__) . "/lenses");
+    	$this->augeas = new Augeas(dirname(__FILE__) . "/root", dirname(__FILE__) . "/lenses");
     }
 
     public function testShouldBeAbleToInsertNodesBefore()
