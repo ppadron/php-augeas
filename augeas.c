@@ -281,7 +281,7 @@ PHP_METHOD(Augeas, get)
 }
 /* }}} */
 
-/* {{{ proto boolean Augeas::set(resource $augeas, string $path, string $value);
+/* {{{ proto boolean Augeas::set(string $path, string $value);
 	   Sets the value of $path to $value */
 PHP_METHOD(Augeas, set)
 {
@@ -344,7 +344,7 @@ PHP_METHOD(Augeas, match)
 }
 /* }}} */
 
-/* {{{ proto boolean Augeas::rm(resource $augeas, string $path);
+/* {{{ proto boolean Augeas::rm(string $path);
 	   Removes a node and all it's children */
 PHP_METHOD(Augeas, rm)
 {   
@@ -365,7 +365,7 @@ PHP_METHOD(Augeas, rm)
 }
 /* }}} */
 
-/* {{{  proto boolean Augeas::insert(resource $augeas, string $path, string $label[, int $order]);
+/* {{{  proto boolean Augeas::insert(string $path, string $label[, int $order]);
 		Inserts a new sibling of path expression $path with label $label before or after $path, depending on $order. $path must match exactly one node in the tree. */
 PHP_METHOD(Augeas, insert)
 {	
@@ -391,7 +391,7 @@ PHP_METHOD(Augeas, insert)
 }
 /* }}} */
 
-/* {{{  proto boolean Augeas::save(resource $augeas);
+/* {{{  proto boolean Augeas::save();
 		Saves the parts of the tree that have been changed into their respective files. */
 PHP_METHOD(Augeas, save)
 {
