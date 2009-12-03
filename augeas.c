@@ -320,7 +320,7 @@ PHP_METHOD(Augeas, match)
 {
 	int i;
 	char *path;
-	char *value;
+	char *value, *tmpval;
 	char **matches;
 	augeas *aug_intern;
 
@@ -343,7 +343,14 @@ PHP_METHOD(Augeas, match)
 	
 	if (retval > 0) {
 		for (i=0; i<retval; i++) {
-			add_next_index_string(return_value, matches[i], 1);
+
+			aug_get(aug_intern, matches[i], &tmpval);
+
+			if (tmpval) {
+				add_assoc_string(return_value, matches[i], tmpval, 1);
+			} else {
+				add_assoc_null(return_value, matches[i]);
+			}
 		}
 	}
 
