@@ -54,8 +54,8 @@
  <extsrcrelease/>
  <changelog>
   <release>
-   <version><release>0.4.0</release><api>0.4.0</release></version>
-   <stability><release>beta</release><api>beta</release></stability>
+   <version><release>0.4.0</release><api>0.4.0</api></version>
+   <stability><release>beta</release><api>beta</api></stability>
    <notes>- new method Augeas::mv()
 - added test suite AllTests.php</notes>
   </release>
