@@ -32,7 +32,7 @@ extern zend_module_entry augeas_module_entry;
 #include "TSRM.h"
 #endif
 
-#define PHP_AUGEAS_VERSION "0.4.0"
+#define PHP_AUGEAS_VERSION "0.5.0"
 
 typedef struct _php_augeas_object {
 	zend_object zo;
