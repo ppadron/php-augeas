@@ -10,34 +10,34 @@
   <email>ppadron@php.net</email>
   <active>yes</active>
  </lead>
- <date>2010-01-29</date>
- <time>17:03:35</time>
+ <date>2010-02-01</date>
  <version>
-  <release>0.5.1</release>
-  <api>0.5.0</api>
+  <release>0.6.0</release>
+  <api>0.6.0</api>
  </version>
  <stability>
   <release>beta</release>
   <api>beta</api>
  </stability>
  <license>PHP License</license>
- <notes>- Added README file</notes>
+ <notes>- extension is now compatible with PHP 5.3 (removed static from ZEND_ARG_INFO)
+- fixed some compiler warnings</notes>
  <contents>
   <dir name="/">
-   <file md5sum="6bc22510815db9fed709fb8c4664e508" name="tests/loadpath/hosts.aug" role="test" />
-   <file md5sum="457024ebaa4f8503fec40acbbd13ad25" name="tests/root/etc/hosts" role="test" />
-   <file md5sum="4ee172495b19b4dd61b6512e0758b425" name="tests/AugeasGetTest.php" role="test" />
-   <file md5sum="8736d6e892475c3a19fbb4f5bac4aef8" name="tests/AugeasInsertTest.php" role="test" />
-   <file md5sum="dbc11ffc0b13c88cbcd07b78265c4190" name="tests/AugeasMatchTest.php" role="test" />
-   <file md5sum="0c3c81447700bf245fa77666295d5bae" name="tests/AugeasTest.php" role="test" />
-   <file md5sum="7d9833bb191183a5eeaaf3826481e17b" name="tests/AugeasMvTest.php" role="test" />
-   <file md5sum="e5307d44416229b1b2612ca68bfda6cb" name="tests/AllTests.php" role="test" />
-   <file md5sum="77ff9f3191ff9490f4dd2bc8149d633e" name="augeas.c" role="src" />
-   <file md5sum="562761b79a2e223a05551da9321e01f1" name="config.m4" role="src" />
-   <file md5sum="4c97ade244d55ea4aec1ab6a034e3d97" name="CREDITS" role="doc" />
-   <file md5sum="694f49a7e1f276ba75a3dd2c5acd580d" name="LICENSE" role="doc" />
-   <file md5sum="f5077f37f208785ef6be336dfe655d8b" name="README" role="doc" />
-   <file md5sum="f531557ab6c10bad5e1186cc60ca1317" name="php_augeas.h" role="src" />
+   <file name="tests/loadpath/hosts.aug" role="test" />
+   <file name="tests/root/etc/hosts" role="test" />
+   <file name="tests/AugeasGetTest.php" role="test" />
+   <file name="tests/AugeasInsertTest.php" role="test" />
+   <file name="tests/AugeasMatchTest.php" role="test" />
+   <file name="tests/AugeasTest.php" role="test" />
+   <file name="tests/AugeasMvTest.php" role="test" />
+   <file name="tests/AllTests.php" role="test" />
+   <file name="augeas.c" role="src" />
+   <file name="config.m4" role="src" />
+   <file name="CREDITS" role="doc" />
+   <file name="LICENSE" role="doc" />
+   <file name="README" role="doc" />
+   <file name="php_augeas.h" role="src" />
   </dir>
  </contents>
  <dependencies>
@@ -53,6 +53,17 @@
  <providesextension>augeas</providesextension>
  <extsrcrelease />
  <changelog>
+  <release>
+   <version>
+    <release>0.5.1</release>
+    <api>0.5.0</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <notes>- added README file</notes>
+  </release>
   <release>
    <version>
     <release>0.5.0</release>
