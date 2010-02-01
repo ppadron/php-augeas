@@ -1,43 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<package xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" packagerversion="1.4.7" version="2.0" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0 http://pear.php.net/dtd/tasks-1.0.xsd http://pear.php.net/dtd/package-2.0 http://pear.php.net/dtd/package-2.0.xsd"> 
+<package packagerversion="1.7.1" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0 http://pear.php.net/dtd/tasks-1.0.xsd http://pear.php.net/dtd/package-2.0 http://pear.php.net/dtd/package-2.0.xsd">
  <name>augeas</name>
  <channel>pecl.php.net</channel>
  <summary>PHP bindings to the Augeas API</summary>
- <description>Augeas is a configuration editing tool. It parses configuration files in their native formats and transforms them into a tree. Configuration changes are made by manipulating this tree and saving it back into native config files. This extension provides PHP bindings to it's API.</description>
+ <description>Augeas is a configuration editing tool. It parses configuration files in their native formats and transforms them into a tree. Configuration changes are made by manipulating this tree and saving it back into native config files. This extension provides PHP bindings to it&apos;s API.</description>
  <lead>
   <name>Pedro Padron</name>
   <user>ppadron</user>
   <email>ppadron@php.net</email>
   <active>yes</active>
  </lead>
- <date>2009-12-15</date>
- <version><release>0.5.0</release><api>0.5.0</api></version>
- <stability><release>beta</release><api>beta</api></stability>
+ <date>2010-01-29</date>
+ <time>17:03:35</time>
+ <version>
+  <release>0.5.1</release>
+  <api>0.5.0</api>
+ </version>
+ <stability>
+  <release>beta</release>
+  <api>beta</api>
+ </stability>
  <license>PHP License</license>
- <notes>- Augeas::match() now returns an associative array with nodes => values</notes>
+ <notes>- Added README file</notes>
  <contents>
   <dir name="/">
-   <dir name="tests">
-    <dir name="loadpath">
-     <file role="test" name="hosts.aug"/>
-    </dir> <!-- /tests/loadpath -->
-    <dir name="root">
-     <dir name="etc">
-      <file role="test" name="hosts"/>
-     </dir> <!-- /tests/root/etc -->
-    </dir> <!-- /tests/root -->
-    <file role="test" name="AugeasGetTest.php"/>
-    <file role="test" name="AugeasInsertTest.php"/>
-    <file role="test" name="AugeasMatchTest.php"/>
-    <file role="test" name="AugeasTest.php"/>
-    <file role="test" name="AugeasMvTest.php"/>
-    <file role="test" name="AllTests.php"/>
-   </dir> <!-- /tests -->
-   <file role="src" name="augeas.c"/>
-   <file role="src" name="config.m4"/>
-   <file role="doc" name="CREDITS"/>
-   <file role="doc" name="LICENSE"/>
-   <file role="src" name="php_augeas.h"/>
+   <file md5sum="6bc22510815db9fed709fb8c4664e508" name="tests/loadpath/hosts.aug" role="test" />
+   <file md5sum="457024ebaa4f8503fec40acbbd13ad25" name="tests/root/etc/hosts" role="test" />
+   <file md5sum="4ee172495b19b4dd61b6512e0758b425" name="tests/AugeasGetTest.php" role="test" />
+   <file md5sum="8736d6e892475c3a19fbb4f5bac4aef8" name="tests/AugeasInsertTest.php" role="test" />
+   <file md5sum="dbc11ffc0b13c88cbcd07b78265c4190" name="tests/AugeasMatchTest.php" role="test" />
+   <file md5sum="0c3c81447700bf245fa77666295d5bae" name="tests/AugeasTest.php" role="test" />
+   <file md5sum="7d9833bb191183a5eeaaf3826481e17b" name="tests/AugeasMvTest.php" role="test" />
+   <file md5sum="e5307d44416229b1b2612ca68bfda6cb" name="tests/AllTests.php" role="test" />
+   <file md5sum="77ff9f3191ff9490f4dd2bc8149d633e" name="augeas.c" role="src" />
+   <file md5sum="562761b79a2e223a05551da9321e01f1" name="config.m4" role="src" />
+   <file md5sum="4c97ade244d55ea4aec1ab6a034e3d97" name="CREDITS" role="doc" />
+   <file md5sum="694f49a7e1f276ba75a3dd2c5acd580d" name="LICENSE" role="doc" />
+   <file md5sum="f5077f37f208785ef6be336dfe655d8b" name="README" role="doc" />
+   <file md5sum="f531557ab6c10bad5e1186cc60ca1317" name="php_augeas.h" role="src" />
   </dir>
  </contents>
  <dependencies>
@@ -51,11 +51,28 @@
   </required>
  </dependencies>
  <providesextension>augeas</providesextension>
- <extsrcrelease/>
+ <extsrcrelease />
  <changelog>
   <release>
-   <version><release>0.4.0</release><api>0.4.0</api></version>
-   <stability><release>beta</release><api>beta</api></stability>
+   <version>
+    <release>0.5.0</release>
+    <api>0.5.0</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <notes>- Augeas::match() now returns an associative array with nodes =&gt; values</notes>
+  </release>
+  <release>
+   <version>
+    <release>0.4.0</release>
+    <api>0.4.0</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
    <notes>- new method Augeas::mv()
 - added test suite AllTests.php</notes>
   </release>
@@ -69,8 +86,7 @@
     <api>beta</api>
    </stability>
    <notes>- private property Augeas::$handle no longer exists
-- resource type is no longer used
-   </notes>
+- resource type is no longer used</notes>
   </release>
   <release>
    <version>
