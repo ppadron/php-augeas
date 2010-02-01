@@ -166,7 +166,7 @@ PHP_MINIT_FUNCTION(augeas)
 
 	/* Register AugeasException class (inherits Exception) */
 	INIT_CLASS_ENTRY(ce, "AugeasException", NULL);
-	ce_exception = zend_exception_get_default();
+	ce_exception = (zend_class_entry *) zend_exception_get_default();
 	augeas_ce_AugeasException = zend_register_internal_class_ex(&ce, ce_exception, ce_exception->name TSRMLS_DC); 
 
 	/* Register Augeas class */
@@ -255,7 +255,7 @@ PHP_METHOD(Augeas, get)
 
 	AUGEAS_FROM_OBJECT(aug_intern, getThis());
 
-	retval = aug_get(aug_intern, path, &value);
+	retval = aug_get(aug_intern, path, (const char **) &value);
 
 	switch (retval) {
 
@@ -336,7 +336,7 @@ PHP_METHOD(Augeas, match)
 	if (retval > 0) {
 		for (i=0; i<retval; i++) {
 
-			aug_get(aug_intern, matches[i], &tmpval);
+			aug_get(aug_intern, matches[i], (const char **) &tmpval);
 
 			if (tmpval) {
 				add_assoc_string(return_value, matches[i], tmpval, 1);
