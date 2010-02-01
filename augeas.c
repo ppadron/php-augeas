@@ -32,45 +32,37 @@ zend_class_entry *augeas_ce_AugeasException;
 /* }}} */
 
 /* {{{ ZEND_BEGIN_ARG_INFO */
-static
 ZEND_BEGIN_ARG_INFO_EX(arginfo_Augeas__construct, 0, 0, 0)
 	ZEND_ARG_INFO(0, root)
 	ZEND_ARG_INFO(0, loadpath)
 	ZEND_ARG_INFO(0, flags)
 ZEND_END_ARG_INFO();
 
-static
 ZEND_BEGIN_ARG_INFO(arginfo_Augeas_get, 0)
 	ZEND_ARG_INFO(0, path)
 ZEND_END_ARG_INFO();
 
-static
 ZEND_BEGIN_ARG_INFO(arginfo_Augeas_match, 0)
 	ZEND_ARG_INFO(0, path)
 ZEND_END_ARG_INFO();
 
-static
 ZEND_BEGIN_ARG_INFO(arginfo_Augeas_set, 0)
 	ZEND_ARG_INFO(0, path)
 	ZEND_ARG_INFO(0, value)
 ZEND_END_ARG_INFO();
 
-static
 ZEND_BEGIN_ARG_INFO(arginfo_Augeas_save, 0)
 ZEND_END_ARG_INFO();
 
-static
 ZEND_BEGIN_ARG_INFO(arginfo_Augeas_rm, 0)
 	ZEND_ARG_INFO(0, path)
 ZEND_END_ARG_INFO();
 
-static
 ZEND_BEGIN_ARG_INFO(arginfo_Augeas_mv, 0)
 	ZEND_ARG_INFO(0, source)
 	ZEND_ARG_INFO(0, destination)
 ZEND_END_ARG_INFO();
 
-static
 ZEND_BEGIN_ARG_INFO_EX(arginfo_Augeas_insert, 0, 0, 2)
 	ZEND_ARG_INFO(0, path)
 	ZEND_ARG_INFO(0, label)
