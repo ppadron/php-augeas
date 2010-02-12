@@ -162,13 +162,11 @@ static zend_object_value augeas_object_new(zend_class_entry *class_type TSRMLS_D
  */
 PHP_MINIT_FUNCTION(augeas)
 {
-	zend_class_entry ce;
-	zend_class_entry *ce_exception;
+	zend_class_entry ce, ce_exception;
 
 	/* Register AugeasException class (inherits Exception) */
-	INIT_CLASS_ENTRY(ce, "AugeasException", NULL);
-	ce_exception = (zend_class_entry *) zend_exception_get_default();
-	augeas_ce_AugeasException = zend_register_internal_class_ex(&ce, ce_exception, ce_exception->name TSRMLS_DC); 
+	INIT_CLASS_ENTRY(ce_exception, "AugeasException", NULL);
+	augeas_ce_AugeasException = zend_register_internal_class_ex(&ce_exception, zend_exception_get_default(TSRMLS_C), NULL TSRMLS_DC); 
 
 	/* Register Augeas class */
 	INIT_CLASS_ENTRY(ce, "Augeas", augeas_methods);
@@ -176,14 +174,14 @@ PHP_MINIT_FUNCTION(augeas)
 	augeas_ce_Augeas->create_object = augeas_object_new;
 
 	/* Register Augeas class constants */
-	zend_declare_class_constant_long(augeas_ce_Augeas, "AUGEAS_NONE", sizeof("AUGEAS_NONE")-1, AUG_NONE TSRMLS_DC);
-	zend_declare_class_constant_long(augeas_ce_Augeas, "AUGEAS_SAVE_BACKUP", sizeof("AUGEAS_SAVE_BACKUP")-1, AUG_SAVE_BACKUP TSRMLS_DC);
-	zend_declare_class_constant_long(augeas_ce_Augeas, "AUGEAS_SAVE_NEWFILE", sizeof("AUGEAS_SAVE_NEWFILE")-1, AUG_SAVE_NEWFILE TSRMLS_DC);
-	zend_declare_class_constant_long(augeas_ce_Augeas, "AUGEAS_TYPE_CHECK", sizeof("AUGEAS_TYPE_CHECK")-1, AUG_TYPE_CHECK TSRMLS_DC);
-	zend_declare_class_constant_long(augeas_ce_Augeas, "AUGEAS_NO_STDINC", sizeof("AUGEAS_NO_STDINC")-1, AUG_NO_STDINC TSRMLS_DC);
+	zend_declare_class_constant_long(augeas_ce_Augeas, "AUGEAS_NONE", sizeof("AUGEAS_NONE")-1, AUG_NONE TSRMLS_CC);
+	zend_declare_class_constant_long(augeas_ce_Augeas, "AUGEAS_SAVE_BACKUP", sizeof("AUGEAS_SAVE_BACKUP")-1, AUG_SAVE_BACKUP TSRMLS_CC);
+	zend_declare_class_constant_long(augeas_ce_Augeas, "AUGEAS_SAVE_NEWFILE", sizeof("AUGEAS_SAVE_NEWFILE")-1, AUG_SAVE_NEWFILE TSRMLS_CC);
+	zend_declare_class_constant_long(augeas_ce_Augeas, "AUGEAS_TYPE_CHECK", sizeof("AUGEAS_TYPE_CHECK")-1, AUG_TYPE_CHECK TSRMLS_CC);
+	zend_declare_class_constant_long(augeas_ce_Augeas, "AUGEAS_NO_STDINC", sizeof("AUGEAS_NO_STDINC")-1, AUG_NO_STDINC TSRMLS_CC);
 
-	zend_declare_class_constant_long(augeas_ce_Augeas, "AUGEAS_INSERT_BEFORE", sizeof("AUGEAS_INSERT_BEFORE")-1, 1 TSRMLS_DC);
-	zend_declare_class_constant_long(augeas_ce_Augeas, "AUGEAS_INSERT_AFTER", sizeof("AUGEAS_INSERT_AFTER")-1, 0 TSRMLS_DC);
+	zend_declare_class_constant_long(augeas_ce_Augeas, "AUGEAS_INSERT_BEFORE", sizeof("AUGEAS_INSERT_BEFORE")-1, 1 TSRMLS_CC);
+	zend_declare_class_constant_long(augeas_ce_Augeas, "AUGEAS_INSERT_AFTER", sizeof("AUGEAS_INSERT_AFTER")-1, 0 TSRMLS_CC);
  
 	return SUCCESS;
 }
