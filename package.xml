@@ -10,9 +10,9 @@
   <email>ppadron@php.net</email>
   <active>yes</active>
  </lead>
- <date>2010-02-01</date>
+ <date>2010-02-12</date>
  <version>
-  <release>0.6.0</release>
+  <release>0.6.1</release>
   <api>0.6.0</api>
  </version>
  <stability>
@@ -20,8 +20,7 @@
   <api>beta</api>
  </stability>
  <license>PHP License</license>
- <notes>- extension is now compatible with PHP 5.3 (removed static from ZEND_ARG_INFO)
-- fixed some compiler warnings</notes>
+ <notes>- fixed Apache segfault on 64bit</notes>
  <contents>
   <dir name="/">
    <file name="tests/loadpath/hosts.aug" role="test" />
@@ -53,6 +52,18 @@
  <providesextension>augeas</providesextension>
  <extsrcrelease />
  <changelog>
+  <release>
+   <version>
+    <release>0.6.1</release>
+    <api>0.6.0</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <notes>- extension is now compatible with PHP 5.3 (removed static from ZEND_ARG_INFO);
+- fixed some compiler warnings;</notes>
+  </release>
   <release>
    <version>
     <release>0.5.1</release>
