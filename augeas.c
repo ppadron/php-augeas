@@ -22,6 +22,7 @@
 
 #include "php.h"
 #include "php_ini.h"
+#include "zend_exceptions.h"
 #include "ext/standard/info.h"
 #include "augeas.h"
 #include "php_augeas.h"
@@ -110,7 +111,7 @@ ZEND_GET_MODULE(augeas)
         php_augeas_object *obj = (php_augeas_object*) zend_object_store_get_object(object TSRMLS_CC); \
         intern = obj->augeas; \
         if (!intern) { \
-			zend_throw_exception(augeas_ce_AugeasException, "Invalid or unitialized Augeas object"); \
+			zend_throw_exception(augeas_ce_AugeasException, "Invalid or unitialized Augeas object", 0 TSRMLS_CC); \
             RETURN_FALSE; \
         } \
     }
@@ -231,7 +232,7 @@ PHP_METHOD(Augeas, __construct)
 	obj = (php_augeas_object *) zend_object_store_get_object(getThis() TSRMLS_DC);
 	obj->augeas = aug_init(root, loadpath, flags);
 
-	if (!obj->augeas) zend_throw_exception(augeas_ce_AugeasException, "could not initialize augeas resource");
+	if (!obj->augeas) zend_throw_exception(augeas_ce_AugeasException, "could not initialize augeas resource", 0 TSRMLS_CC);
 
 }
 /* }}} */
@@ -274,7 +275,7 @@ PHP_METHOD(Augeas, get)
 			break;
 
 		default:
-			zend_throw_exception(augeas_ce_AugeasException, "specified path is invalid");
+			zend_throw_exception(augeas_ce_AugeasException, "specified path is invalid", 0 TSRMLS_CC);
 			break;
 	}
 	
@@ -329,7 +330,7 @@ PHP_METHOD(Augeas, match)
 	array_init(return_value);
 
 	if (retval == -1) {
-		zend_throw_exception(augeas_ce_AugeasException, "the specified path is invalid");
+		zend_throw_exception(augeas_ce_AugeasException, "the specified path is invalid", 0 TSRMLS_CC);
 		return;
 	}
 	
